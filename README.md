@@ -20,4 +20,4 @@ Admin can:
 ## 🚀 Setup Instructions
 1. Clone the repo:
    ```bash
-   git clone https://github.com/krish480/catering-reservation-system.git
+   git clone https://github.com/Krish480/catering-reservation-system.git
