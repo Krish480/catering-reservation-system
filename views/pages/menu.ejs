@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MealMatrix - Menu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Firebase SDKs -->
+  <script type="module">
+    // Import Firebase SDKs
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+
+    // 🔹 Firebase Config (replace with your own keys)
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MSG_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Fetch Menu Items
+    async function loadMenu() {
+      const menuContainer = document.getElementById("menu-container");
+      menuContainer.innerHTML = "";
+
+      const querySnapshot = await getDocs(collection(db, "menu"));
+      querySnapshot.forEach((doc) => {
+        const item = doc.data();
+        menuContainer.innerHTML += `
+          <div class="bg-white p-6 shadow-md rounded-xl">
+            <img src="${item.imageUrl}" alt="${item.name}" class="h-40 w-full object-cover rounded-md">
+            <h3 class="mt-4 text-xl font-semibold text-gray-800">${item.name}</h3>
+            <p class="text-gray-600">₹${item.price}</p>
+            <button class="mt-4 bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700">Add to Cart</button>
+          </div>
+        `;
+      });
+    }
+
+    // Load menu when page loads
+    window.onload = loadMenu;
+  </script>
+</head>
+<body class="bg-gray-50 font-sans">
+  <%- include("../partials/header") %>
+
+  <!-- Menu Section -->
+  <section class="container mx-auto py-16 px-6">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Our Menu</h2>
+    <div id="menu-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Items dynamically injected from Firestore -->
+    </div>
+  </section>
+
+  <%- include("../partials/footer") %>
+</body>
+</html>
