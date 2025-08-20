@@ -1,0 +1,18 @@
+const { initializeApp } = require("firebase/app");
+const { getFirestore } = require("firebase/firestore");
+
+// Firebase config 
+const firebaseConfig = {
+  apiKey: "AIzaSyAX_mqo76e7rTTYJDPJ1djUboGGxENvjow",
+  authDomain: "catering-system-904a2.firebaseapp.com",
+  projectId: "catering-system-904a2",
+  storageBucket: "catering-system-904a2.firebasestorage.app",
+  messagingSenderId: "237268631141",
+  appId: "1:237268631141:web:4c10d6c99d1d4c9b53108c"
+};
+
+// Init
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+module.exports = db;

@@ -1,0 +1,39 @@
+<header class="bg-white shadow-md">
+  <nav class="container mx-auto flex justify-between items-center py-4 px-6">
+    <!-- Logo -->
+    <div class="flex items-center gap-2">
+      <img src="/images/logo.png" alt="MealMatrix Logo" class="h-10">
+      <span class="text-2xl font-bold text-orange-600">MealMatrix</span>
+    </div>
+
+    <!-- Menu (desktop) -->
+    <ul id="menu" class="hidden md:flex gap-6 text-gray-700 font-medium">
+      <li><a href="/" class="hover:text-orange-600">Home</a></li>
+      <li><a href="/menu" class="hover:text-orange-600">Menu</a></li>
+      <li><a href="/orders" class="hover:text-orange-600">Orders</a></li>
+      <li><a href="/about" class="hover:text-orange-600">About</a></li>
+      <li><a href="/contact" class="hover:text-orange-600">Contact</a></li>
+    </ul>
+
+    <!-- Hamburger (mobile) -->
+    <button id="menu-btn" class="md:hidden text-3xl focus:outline-none">☰</button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <ul id="mobile-menu" class="hidden flex-col gap-4 px-6 pb-4 bg-white shadow-md md:hidden">
+    <li><a href="/" class="hover:text-orange-600">Home</a></li>
+    <li><a href="/menu" class="hover:text-orange-600">Menu</a></li>
+    <li><a href="/orders" class="hover:text-orange-600">Orders</a></li>
+    <li><a href="/about" class="hover:text-orange-600">About</a></li>
+    <li><a href="/contact" class="hover:text-orange-600">Contact</a></li>
+  </ul>
+</header>
+
+<script>
+  const menuBtn = document.getElementById("menu-btn");
+  const mobileMenu = document.getElementById("mobile-menu");
+
+  menuBtn.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+  });
+</script>
