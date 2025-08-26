@@ -35,6 +35,35 @@ app.get("/", (req,res) => {
     res.render("pages/index", {title: "MealMatrix"})
 })
 
+// Menu
+app.get("/menu", (req, res) => {
+  res.render("pages/menu");
+});
+
+// 🔹 Admin Credentials (sirf server-side safe)
+const ADMIN_EMAIL = "admin@gmail.com";
+const ADMIN_PASS = "admin123";
+
+// Render login page
+app.get("/admin-login", (req, res) => {
+  res.render("pages/admin-login");
+});
+
+// Handle login form submit
+app.post("/admin-login", (req, res) => {
+  const { email, password } = req.body;
+
+  if (email === ADMIN_EMAIL && password === ADMIN_PASS) {
+    res.redirect("/admin"); // ✅ Success
+  } else {
+    res.send("❌ Invalid credentials, try again.");
+  }
+});
+
+// Admin Dashboard Page
+app.get("/admin", (req, res) => {
+  res.render("pages/admin");
+});
 
 // Server Start
 app.listen(port, () => {
