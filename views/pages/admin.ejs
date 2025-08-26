@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MealMatrix - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-storage.js";
+
+        // Firebase config 
+        const firebaseConfig = {
+            apiKey: "AIzaSyAX_mqo76e7rTTYJDPJ1djUboGGxENvjow",
+            authDomain: "catering-system-904a2.firebaseapp.com",
+            projectId: "catering-system-904a2",
+            storageBucket: "catering-system-904a2.firebasestorage.app",
+            messagingSenderId: "237268631141",
+            appId: "1:237268631141:web:4c10d6c99d1d4c9b53108c"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        // Upload Product Function
+        async function uploadProduct(e) {
+            e.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const price = document.getElementById("price").value;
+            const category = document.getElementById("category").value;
+            const file = document.getElementById("image").files[0];
+
+            if (!file) {
+                alert("Please select an image!");
+                return;
+            }
+
+            // 🔹 Upload image to Firebase Storage
+            const storageRef = ref(storage, "menu/" + file.name);
+            await uploadBytes(storageRef, file);
+            const imageUrl = await getDownloadURL(storageRef);
+
+            // 🔹 Save product details in Firestore
+            try {
+                await addDoc(collection(db, "menu"), {
+                    name: name,
+                    price: parseInt(price),
+                    category: category,
+                    imageUrl: imageUrl
+                });
+                alert("Product uploaded successfully!");
+                document.getElementById("uploadForm").reset();
+            } catch (error) {
+                console.error("Error adding product: ", error);
+            }
+        }
+
+        // Attach event listener
+        window.onload = () => {
+            document.getElementById("uploadForm").addEventListener("submit", uploadProduct);
+        };
+    </script>
+</head>
+
+<body class="bg-gray-50 font-sans">
+
+    <%- include("../partials/header") %>
+
+        <section class="container mx-auto py-16 px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Admin Dashboard</h2>
+
+            <!-- Upload Product Form -->
+            <div class="bg-white p-6 shadow-md rounded-xl max-w-lg mx-auto">
+                <h3 class="text-xl font-semibold text-orange-600 mb-4">Upload Product</h3>
+                <form id="uploadForm" class="space-y-4">
+                    <input type="text" id="name" placeholder="Product Name" class="w-full border p-3 rounded-lg"
+                        required>
+                    <input type="number" id="price" placeholder="Price" class="w-full border p-3 rounded-lg" required>
+                    <input type="text" id="category" placeholder="Category (Veg / Non-Veg / Drinks)"
+                        class="w-full border p-3 rounded-lg" required>
+                    <input type="file" id="image" class="w-full border p-3 rounded-lg" accept="image/*" required>
+                    <button class="w-full bg-orange-600 text-white py-3 rounded-lg hover:bg-orange-700">Upload
+                        Product</button>
+                </form>
+            </div>
+        </section>
+
+        <%- include("../partials/footer") %>
+
+</body>
+
+</html>
