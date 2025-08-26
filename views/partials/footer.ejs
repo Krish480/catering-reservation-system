@@ -1,19 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title>Footer</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+    integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <title>Footer</title>
 </head>
+
 <body>
-  <footer class="bg-gray-800 text-white py-6 mt-10">
-  <div class="container mx-auto text-center">
-    <p>&copy; 2025 MealMatrix. All Rights Reserved.</p>
-    <p class="mt-2 text-sm text-gray-400">Designed for Catering Reservation & Ordering System Project</p>
-  </div>
-</footer>
+
+  <!-- Bottom Navigation -->
+  <nav class="fixed z-20 bottom-0 left-0 w-full bg-white border-t shadow-md">
+    <div class="flex justify-around">
+      <a href="/" class="flex flex-col items-center py-2 text-orange-600">
+        <i class="fa-solid fa-house"></i>
+        <span class="text-sm relative text-gray-800 
+          after:content-[''] after:absolute after:left-0 after:-bottom-1 
+          after:w-0 after:h-[4px] after:bg-orange-600 
+          after:rounded-t-full
+          hover:after:w-full after:transition-all after:duration-300">Home</span>
+      </a>
+      <a href="/menu" class="flex flex-col items-center py-2 text-gray-600 hover:text-orange-600">
+        <ion-icon name="grid-outline"></ion-icon>
+        <span class="text-sm relative text-gray-800 
+          after:content-[''] after:absolute after:left-0 after:-bottom-1 
+          after:w-0 after:h-[4px] after:bg-orange-600 
+          after:rounded-t-full
+          hover:after:w-full after:transition-all after:duration-300">Menu</span>
+      </a>
+
+      <a href="/orders" class="flex flex-col items-center py-2 text-gray-600 hover:text-orange-600">
+        <i class="fa-solid fa-truck"></i>
+        <span class="text-sm relative text-gray-800 
+          after:content-[''] after:absolute after:left-0 after:-bottom-1 
+          after:w-0 after:h-[4px] after:bg-orange-600 
+          after:rounded-t-full
+          hover:after:w-full after:transition-all after:duration-300">Orders</span>
+      </a>
+
+      <a href="/about" class="flex flex-col items-center py-2 text-gray-600 hover:text-orange-600">
+        <i class="fa-solid fa-circle-info"></i>
+        <span class="text-sm relative text-gray-800 
+          after:content-[''] after:absolute after:left-0 after:-bottom-1 
+          after:w-0 after:h-[4px] after:bg-orange-600 
+          after:rounded-t-full
+          hover:after:w-full after:transition-all after:duration-300">About</span>
+      </a>
+
+      <a href="/contact" class="flex flex-col items-center py-2 text-gray-600 hover:text-orange-600">
+        <i class="fa-solid fa-address-book"></i>
+        <span class="text-sm relative text-gray-800 
+          after:content-[''] after:absolute after:left-0 after:-bottom-1 
+          after:w-0 after:h-[4px] after:bg-orange-600 
+          after:rounded-t-full
+          hover:after:w-full after:transition-all after:duration-300">Contact</span>
+      </a>
+    </div>
+  </nav>
+
+  <footer class="bg-gray-800 text-white py-6 mt-10 re bottom-0 left-0 w-full">
+    <div class="container mx-auto text-center">
+      <p>&copy; 2025 MealMatrix. All Rights Reserved.</p>
+      <p class="mt-2 text-sm text-gray-400">Designed for Catering Reservation & Ordering System Project</p>
+    </div>
+  </footer>
 
 
 </body>
+
 </html>
