@@ -4,21 +4,6 @@ const port = 8080;
 const path = require("path");
 const { title } = require("process");
 
-// Firebase Config
-const firebaseConfig = {
-  apiKey: "AIzaSyAX_mqo76e7rTTYJDPJ1djUboGGxENvjow",
-  authDomain: "catering-system-904a2.firebaseapp.com",
-  projectId: "catering-system-904a2",
-  storageBucket: "catering-system-904a2.firebasestorage.app",
-  messagingSenderId: "237268631141",
-  appId: "1:237268631141:web:4c10d6c99d1d4c9b53108c"
-};
-
-
-// Database
-const db = require("./firebase");
-
-
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
@@ -40,13 +25,13 @@ app.get("/menu", (req, res) => {
   res.render("pages/menu");
 });
 
-// 🔹 Admin Credentials (sirf server-side safe)
+// Admin Credentials (sirf server-side safe)
 const ADMIN_EMAIL = "admin@gmail.com";
 const ADMIN_PASS = "admin123";
 
-// Render login page
+// Render admin login page
 app.get("/admin-login", (req, res) => {
-  res.render("pages/admin-login");
+  res.render("pages/admin-login", { title: "Admin Login" });
 });
 
 // Handle login form submit
@@ -54,7 +39,7 @@ app.post("/admin-login", (req, res) => {
   const { email, password } = req.body;
 
   if (email === ADMIN_EMAIL && password === ADMIN_PASS) {
-    res.redirect("/admin"); // ✅ Success
+    res.redirect("/admin"); //Success
   } else {
     res.send("❌ Invalid credentials, try again.");
   }
@@ -62,8 +47,12 @@ app.post("/admin-login", (req, res) => {
 
 // Admin Dashboard Page
 app.get("/admin", (req, res) => {
-  res.render("pages/admin");
+  res.render("pages/admin",  { title: "Admin Dashboard" });
 });
+
+// Import and use Admin routes (upload, orders, etc.)
+const adminRoutes = require("./routes/admin");
+app.use("/admin", adminRoutes);
 
 // Server Start
 app.listen(port, () => {
