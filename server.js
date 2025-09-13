@@ -25,6 +25,21 @@ app.get("/menu", (req, res) => {
   res.render("pages/menu");
 });
 
+//cart
+app.get("/cart", (req, res) => {
+  res.render("pages/cart")
+})
+
+// About
+app.get("/about", (req, res) => {
+  res.render("pages/about")
+})
+
+// About
+app.get("/services", (req, res) => {
+  res.render("pages/services")
+})
+
 // Admin Credentials (sirf server-side safe)
 const ADMIN_EMAIL = "admin@gmail.com";
 const ADMIN_PASS = "admin123";
