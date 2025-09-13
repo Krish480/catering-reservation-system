@@ -2,21 +2,25 @@
   {
     "name": "Paneer Butter Masala",
     "price": 250,
-    "imageUrl": "/images/paneer_masala.png"
+    "imageUrl": "/images/paneer_masala.png",
+    "id": "eb876d19-5355-4b03-89fd-3c1dbfc01248"
   },
   {
     "name": "Veg Biryani",
     "price": 180,
-    "imageUrl": "/images/Veg_biryani.png"
+    "imageUrl": "/images/Veg_biryani.png",
+    "id": "73aa20af-033b-48f7-9135-72af8d85a773"
   },
   {
     "name": "Chole Bhature",
     "price": 120,
-    "imageUrl": "/images/chhole_bhature.png"
+    "imageUrl": "/images/chhole_bhature.png",
+    "id": "ef82b16b-72f7-46e7-893b-7c25795a2d08"
   },
   {
     "name": "Masala Dosa",
     "price": 150,
-    "imageUrl": "/images/masala_dosa.png"
+    "imageUrl": "/images/masala_dosa.png",
+    "id": "c6c0cbb7-128a-4ebb-98b6-acd284debace"
   }
 ]
