@@ -46,8 +46,22 @@
           </button>
         </form>
 
+        <!-- Search Script -->
+        <script>
+          // handle site-wide search
+          function handleSiteSearch(e) {
+            e.preventDefault();
+            const q = document.getElementById("siteSearchInput").value.trim();
+            if (q) {
+              window.location.href = "/menu?q=" + encodeURIComponent(q);
+            } else {
+              window.location.href = "/menu"; //
+            }
+          }
+        </script>
+
         <!-- Cart Desktop -->
-        <a href="/orders" class="hidden md:block text-xl text-gray-600 hover:text-orange-600">
+        <a href="/cart" class="hidden md:block text-xl text-gray-600 hover:text-orange-600">
           <i class="fa-solid fa-cart-shopping"></i>
         </a>
 
