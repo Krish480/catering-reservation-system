@@ -4,48 +4,6 @@
   <meta charset="UTF-8">
   <title>MealMatrix - Menu</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Firebase SDKs -->
-  <script type="module">
-    // Import Firebase SDKs
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
-
-    // Firebase config 
-const firebaseConfig = {
-  apiKey: "AIzaSyAX_mqo76e7rTTYJDPJ1djUboGGxENvjow",
-  authDomain: "catering-system-904a2.firebaseapp.com",
-  projectId: "catering-system-904a2",
-  storageBucket: "catering-system-904a2.firebasestorage.app",
-  messagingSenderId: "237268631141",
-  appId: "1:237268631141:web:4c10d6c99d1d4c9b53108c"
-};
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // Fetch Menu Items
-    async function loadMenu() {
-      const menuContainer = document.getElementById("menu-container");
-      menuContainer.innerHTML = "";
-
-      const querySnapshot = await getDocs(collection(db, "menu"));
-      querySnapshot.forEach((doc) => {
-        const item = doc.data();
-        menuContainer.innerHTML += `
-          <div class="bg-white p-6 shadow-md rounded-xl">
-            <img src="${item.imageUrl}" alt="${item.name}" class="h-40 w-full object-cover rounded-md">
-            <h3 class="mt-4 text-xl font-semibold text-gray-800">${item.name}</h3>
-            <p class="text-gray-600">₹${item.price}</p>
-            <button class="mt-4 bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700">Add to Cart</button>
-          </div>
-        `;
-      });
-    }
-
-    // Load menu when page loads
-    window.onload = loadMenu;
-  </script>
 </head>
 <body class="bg-gray-50 font-sans">
   <%- include("../partials/header") %>
@@ -53,11 +11,41 @@ const firebaseConfig = {
   <!-- Menu Section -->
   <section class="container mx-auto py-16 px-6">
     <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Our Menu</h2>
-    <div id="menu-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <!-- Items dynamically injected from Firestore -->
+    <div id="menu-container" class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+      <!-- Items dynamically injected from JSON -->
     </div>
   </section>
 
   <%- include("../partials/footer") %>
+
+  <script>
+    async function loadMenu() {
+      const menuContainer = document.getElementById("menu-container");
+      menuContainer.innerHTML = "<p class='text-center col-span-3'>Loading menu...</p>";
+
+      try {
+        const response = await fetch("/data/menu.json");
+        const menuItems = await response.json();
+        
+        menuContainer.innerHTML = ""; // Clear loading text
+        menuItems.forEach(item => {
+          menuContainer.innerHTML += `
+            <div class="bg-white p-6 shadow-md rounded-xl hover:shadow-xl transition">
+              <img src="${item.imageUrl}" alt="${item.name}" class="w-full object-cover rounded-md drop-shadow-[0_10px_15px_rgba(0,0,0,0.4)] mx-auto">
+              <h3 class="mt-4 text-xl font-semibold text-gray-800">${item.name}</h3>
+              <p class="text-gray-600">₹${item.price}</p>
+              <button class="mt-4 bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700">Add to Cart</button>
+            </div>
+          `;
+        });
+      } catch (error) {
+        menuContainer.innerHTML = "<p class='text-red-500'>Failed to load menu data.</p>";
+        console.error("Error loading menu:", error);
+      }
+    }
+
+    // Load menu on page load
+    window.onload = loadMenu;
+  </script>
 </body>
 </html>
