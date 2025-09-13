@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Paneer Butter Masala",
+    "price": 250,
+    "imageUrl": "/images/paneer_masala.png"
+  },
+  {
+    "name": "Veg Biryani",
+    "price": 180,
+    "imageUrl": "/images/Veg_biryani.png"
+  },
+  {
+    "name": "Chole Bhature",
+    "price": 120,
+    "imageUrl": "/images/chhole_bhature.png"
+  },
+  {
+    "name": "Masala Dosa",
+    "price": 150,
+    "imageUrl": "/images/masala_dosa.png"
+  }
+]
