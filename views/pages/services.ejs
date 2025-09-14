@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MealMatrix - Services</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <!-- Header -->
+  <%- include("../partials/header") %>
+  <br>
+    <br>
+  <!-- Services Section -->
+  <section id="services" class="py-16">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold text-gray-800 mb-12">Our Services</h2>
+
+      <!-- Services Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        <!-- Service 1 -->
+        <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition">
+          <img src="/images/catering.png" alt="Catering Service" class="w-20 h-20 mx-auto mb-6">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">Catering Service</h3>
+          <p class="text-gray-600">
+            Perfect for weddings, birthdays, and office parties. Customized menu & professional service.
+          </p>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition">
+          <img src="/images/online_order.png" alt="Online Ordering" class="w-20 h-20 mx-auto mb-6">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">Online Ordering</h3>
+          <p class="text-gray-600">
+            Order your favorite meals anytime with fast delivery at your doorstep.
+          </p>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition">
+          <img src="/images/custom_menu.png" alt="Custom Menu" class="w-20 h-20 mx-auto mb-6">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">Custom Menus</h3>
+          <p class="text-gray-600">
+            We design personalized menus for special occasions that fit your budget and taste.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <%- include("../partials/footer") %>
+</body>
+</html>
