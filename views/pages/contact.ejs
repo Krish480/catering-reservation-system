@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MealMatrix - Contact</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+<br>
+    <br>
+  <!-- Header -->
+  <%- include("../partials/header") %>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-16">
+    <div class="container mx-auto px-6 lg:px-20">
+      <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Contact Us</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+
+        <!-- Left: Contact Form -->
+        <div class="bg-white shadow-md rounded-2xl p-8">
+          <h3 class="text-xl font-semibold mb-6 text-gray-700">Send us a Message</h3>
+          <form action="/send-message" method="POST" class="space-y-4">
+            <input type="text" name="name" placeholder="Your Name" required
+              class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-300 focus:outline-none">
+            
+            <input type="email" name="email" placeholder="Your Email" required
+              class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-300 focus:outline-none">
+            
+            <textarea name="message" rows="5" placeholder="Your Message" required
+              class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-300 focus:outline-none"></textarea>
+            
+            <button type="submit"
+              class="bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-700 transition">
+              Send Message
+            </button>
+          </form>
+        </div>
+
+        <!-- Right: Contact Info -->
+        <div class="flex flex-col justify-center bg-white shadow-md rounded-2xl p-8">
+          <h3 class="text-xl font-semibold mb-6 text-gray-700">Get in Touch</h3>
+          <p class="text-gray-600 mb-4">We’d love to hear from you! Reach out using the details below.</p>
+
+          <p class="flex items-center gap-3 mb-3">
+            <i class="fa-solid fa-location-dot text-orange-600"></i>
+            <span>Bhopal, Madhya Pradesh, India</span>
+          </p>
+          <p class="flex items-center gap-3 mb-3">
+            <i class="fa-solid fa-phone text-orange-600"></i>
+            <span>+91 98765 43210</span>
+          </p>
+          <p class="flex items-center gap-3">
+            <i class="fa-solid fa-envelope text-orange-600"></i>
+            <span>support@mealmatrix.com</span>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <%- include("../partials/footer") %>
+
+  <!-- Font Awesome -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/js/all.min.js"></script>
+</body>
+</html>
