@@ -7,7 +7,8 @@
 </head>
 <body class="bg-gray-50 font-sans">
   <%- include("../partials/header") %>
-
+  <br>
+  <br>
   <!-- Menu Section -->
   <section class="container mx-auto py-16 px-6">
     <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Our Menu</h2>
@@ -19,33 +20,96 @@
   <%- include("../partials/footer") %>
 
   <script>
-    async function loadMenu() {
-      const menuContainer = document.getElementById("menu-container");
-      menuContainer.innerHTML = "<p class='text-center col-span-3'>Loading menu...</p>";
+  let menuItemsCache = [];
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-      try {
-        const response = await fetch("/data/menu.json");
-        const menuItems = await response.json();
-        
-        menuContainer.innerHTML = ""; // Clear loading text
-        menuItems.forEach(item => {
-          menuContainer.innerHTML += `
-            <div class="bg-white p-6 shadow-md rounded-xl hover:shadow-xl transition">
-              <img src="${item.imageUrl}" alt="${item.name}" class="w-full object-cover rounded-md drop-shadow-[0_10px_15px_rgba(0,0,0,0.4)] mx-auto">
-              <h3 class="mt-4 text-xl font-semibold text-gray-800">${item.name}</h3>
-              <p class="text-gray-600">₹${item.price}</p>
-              <button class="mt-4 bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700">Add to Cart</button>
-            </div>
-          `;
-        });
-      } catch (error) {
-        menuContainer.innerHTML = "<p class='text-red-500'>Failed to load menu data.</p>";
-        console.error("Error loading menu:", error);
-      }
+  // Utility
+  function saveCart(){ 
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+  }
+  function updateCartCount(){
+    const count = cart.reduce((s,i)=> s + (i.quantity||1), 0);
+    const el = document.getElementById('cart-count');
+    if(el) el.textContent = count;
+  }
+  function showToast(msg){
+    const t = document.createElement('div');
+    t.textContent = msg;
+    t.className = 'fixed bottom-6 right-6 bg-gray-800 text-white px-4 py-2 rounded shadow';
+    document.body.appendChild(t);
+    setTimeout(()=> t.remove(), 1700);
+  }
+
+  async function loadMenu() {
+    const menuContainer = document.getElementById("menu-container");
+    menuContainer.innerHTML = "<p class='text-center col-span-3'>Loading menu...</p>";
+
+    try {
+      const res = await fetch("/data/menu.json");
+      const items = await res.json();
+      menuItemsCache = items; 
+      menuContainer.innerHTML = "";
+
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'bg-white p-6 shadow-md rounded-xl hover:shadow-xl transition';
+
+        const img = document.createElement('img');
+        img.src = item.imageUrl;
+        img.alt = item.name;
+        img.className = 'w-full object-cover rounded-md drop-shadow-[0_10px_15px_rgba(0,0,0,0.35)] mx-auto';
+
+        const title = document.createElement('h3');
+        title.className = 'mt-4 text-xl font-semibold text-gray-800 text-center';
+        title.textContent = item.name;
+
+        const price = document.createElement('p');
+        price.className = 'text-gray-600 text-center';
+        price.textContent = '₹' + item.price;
+
+        const btnWrap = document.createElement('div');
+        btnWrap.className = 'text-center';
+
+        const btn = document.createElement('button');
+        btn.className = 'mt-4 bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700';
+        btn.textContent = 'Add to Cart';
+        btn.dataset.id = item.id;
+        btn.addEventListener('click', () => addToCartById(item.id));
+
+        btnWrap.appendChild(btn);
+        card.appendChild(img);
+        card.appendChild(title);
+        card.appendChild(price);
+        card.appendChild(btnWrap);
+
+        menuContainer.appendChild(card);
+      });
+
+    } catch (err) {
+      console.error(err);
+      menuContainer.innerHTML = "<p class='text-red-500'>Failed to load menu data.</p>";
     }
+  }
 
-    // Load menu on page load
-    window.onload = loadMenu;
-  </script>
+  function addToCartById(id){
+    const item = menuItemsCache.find(x => String(x.id) === String(id));
+    if(!item){ alert('Item not found'); return; }
+
+    const existing = cart.find(x => String(x.id) === String(id));
+    if(existing) existing.quantity = (existing.quantity||1) + 1;
+    else cart.push({ id: item.id, name: item.name, price: item.price, imageUrl: item.imageUrl, quantity: 1 });
+
+    saveCart();
+    showToast(item.name + ' added to cart 🛒');
+  }
+
+  // on page load
+  window.addEventListener('DOMContentLoaded', () => {
+    loadMenu();
+    updateCartCount();
+  });
+</script>
+
 </body>
 </html>
