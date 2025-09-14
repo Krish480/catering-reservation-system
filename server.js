@@ -35,9 +35,19 @@ app.get("/about", (req, res) => {
   res.render("pages/about")
 })
 
-// About
+// Services
 app.get("/services", (req, res) => {
   res.render("pages/services")
+})
+
+// contact
+app.get("/contact", (req, res) => {
+  res.render("pages/contact")
+})
+
+// Orders
+app.get("/orders", (req, res) => {
+  res.render("pages/orders")
 })
 
 // Admin Credentials (sirf server-side safe)
