@@ -1,1 +1,24 @@
-catering-system-904a2-firebase-adminsdk-fbsvc-f9d2e8947f.json
+# Node modules
+node_modules/
+
+# Env file
+.env
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build or dist files (agar banaoge to)
+dist/
+build/
+
+# VSCode settings (optional)
+.vscode/
