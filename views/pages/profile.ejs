@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/images/logo.png">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <title>User Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+  <%- include("../partials/header") %>
+
+<div class="min-h-screen bg-gray-100 flex items-center justify-center p-6">
+  <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md text-center">
+    <div class="w-20 h-20 rounded-full mx-auto bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center text-white text-3xl font-bold">
+      <%= (user && user.name) ? user.name.charAt(0).toUpperCase() : (user && user.email ? user.email.charAt(0).toUpperCase() : 'U') %>
+    </div>
+    <h2 class="text-2xl font-bold mt-4"><%= user.name || user.email %></h2>
+    <p class="text-gray-600 mt-1"><%= user.email %></p>
+    <p class="text-gray-500 text-sm mt-2">User ID: <%= user.id %></p>
+
+    <div class="mt-6 space-y-3">
+      <a href="/menu" class="block py-2 bg-orange-600 text-white rounded-lg">View Menu</a>
+      <a href="/orders" class="block py-2 border rounded-lg">My Orders</a>
+      <a href="/auth/logout" class="block py-2 bg-red-500 text-white rounded-lg">Logout</a>
+    </div>
+  </div>
+</div>
+
+<%- include("../partials/footer") %>
+
+
+</body>
+</html>
