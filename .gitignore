@@ -22,3 +22,8 @@ build/
 
 # VSCode settings (optional)
 .vscode/
+
+
+/data/*.json
+/public/images/products/*
+.env
