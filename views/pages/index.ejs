@@ -45,6 +45,109 @@
   </div>
 </section>
 
+
+<div class="flex space-x-6 overflow-x-auto pb-4 scrollbar-hide category-container">
+  <div onclick="redirectToMenu('pizza')" class="cursor-pointer text-center flex-shrink-0">
+    <img src="/images/pizza.png" class="w-20 h-20 rounded-full object-cover mx-auto">
+    <p class="mt-2 text-sm font-semibold">Pizza</p>
+  </div>
+
+  <div onclick="redirectToMenu('burger')" class="cursor-pointer text-center flex-shrink-0">
+    <img src="/images/burger.png" class="w-20 h-20 rounded-full object-cover mx-auto">
+    <p class="mt-2 text-sm font-semibold">Burger</p>
+  </div>
+
+  <div onclick="redirectToMenu('biryani')" class="cursor-pointer text-center flex-shrink-0">
+    <img src="/images/veg_biryani.png" class="w-20 h-20 rounded-full object-cover mx-auto">
+    <p class="mt-2 text-sm font-semibold">Biryani</p>
+  </div>
+
+  <div onclick="redirectToMenu('cake')" class="cursor-pointer text-center flex-shrink-0">
+    <img src="/images/chocolate_cake.png" class="w-20 h-20 rounded-full object-cover mx-auto">
+    <p class="mt-2 text-sm font-semibold">Cake</p>
+  </div>
+
+  <div onclick="redirectToMenu('rolls')" class="cursor-pointer text-center flex-shrink-0">
+    <img src="/images/rolls.png" class="w-20 h-20 rounded-full object-cover mx-auto">
+    <p class="mt-2 text-sm font-semibold">Rolls</p>
+  </div>
+
+  <div onclick="redirectToMenu('South-indian')" class="cursor-pointer text-center flex-shrink-0">
+    <img src="/images/masala_dosa.png" class="w-20 h-20 rounded-full object-cover mx-auto">
+    <p class="mt-2 text-sm font-semibold">South-indian</p>
+  </div>
+
+  <div onclick="redirectToMenu('chole')" class="cursor-pointer text-center flex-shrink-0">
+    <img src="/images/chhole_bhature.png" class="w-20 h-20 rounded-full object-cover mx-auto">
+    <p class="mt-2 text-sm font-semibold">Chole Bhature</p>
+  </div>
+
+  <div onclick="redirectToMenu('paneer')" class="cursor-pointer text-center flex-shrink-0">
+    <img src="/images/paneer_masala.png" class="w-20 h-20 rounded-full object-cover mx-auto">
+    <p class="mt-2 text-sm font-semibold">Paneer</p>
+  </div>
+
+  <div onclick="redirectToMenu('noodles')" class="cursor-pointer text-center flex-shrink-0">
+    <img src="/images/Noodels.png" class="w-20 h-20 rounded-full object-cover mx-auto">
+    <p class="mt-2 text-sm font-semibold">Noodles</p>
+  </div>
+
+  <div onclick="redirectToMenu('pasta')" class="cursor-pointer text-center flex-shrink-0">
+    <img src="/images/pasta.png" class="w-20 h-20 rounded-full object-cover mx-auto">
+    <p class="mt-2 text-sm font-semibold">Pasta</p>
+  </div>
+
+  <div onclick="redirectToMenu('icecream')" class="cursor-pointer text-center flex-shrink-0">
+    <img src="/images/ice-cream.png" class="w-20 h-20 rounded-full object-cover mx-auto">
+    <p class="mt-2 text-sm font-semibold">Ice Cream</p>
+  </div>
+
+  <div onclick="redirectToMenu('juice')" class="cursor-pointer text-center flex-shrink-0">
+    <img src="/images/juice.png" class="w-20 h-20 rounded-full object-cover mx-auto">
+    <p class="mt-2 text-sm font-semibold">Juice</p>
+  </div>
+
+
+  <div onclick="redirectToMenu('sandwich')" class="cursor-pointer text-center flex-shrink-0">
+    <img src="/images/sandwich.png" class="w-20 h-20 rounded-full object-cover mx-auto">
+    <p class="mt-2 text-sm font-semibold">Sandwich</p>
+  </div>
+
+
+  <div onclick="redirectToMenu('samosa')" class="cursor-pointer text-center flex-shrink-0">
+    <img src="/images/samosa.png" class="w-20 h-20 rounded-full object-cover mx-auto">
+    <p class="mt-2 text-sm font-semibold">Samosa</p>
+  </div>
+
+  <div onclick="redirectToMenu('momos')" class="cursor-pointer text-center flex-shrink-0">
+    <img src="/images/momos.png" class="w-20 h-20 rounded-full object-cover mx-auto">
+    <p class="mt-2 text-sm font-semibold">Momos</p>
+  </div>
+
+  <div onclick="redirectToMenu('tacos')" class="cursor-pointer text-center flex-shrink-0">
+    <img src="/images/tacos.png" class="w-20 h-20 rounded-full object-cover mx-auto">
+    <p class="mt-2 text-sm font-semibold">Tacos</p>
+  </div>
+
+  <div onclick="redirectToMenu('salad')" class="cursor-pointer text-center flex-shrink-0">
+    <img src="/images/salad.png" class="w-20 h-20 rounded-full object-cover mx-auto">
+    <p class="mt-2 text-sm font-semibold">Salad</p>
+  </div>
+
+  <div onclick="redirectToMenu('soup')" class="cursor-pointer text-center flex-shrink-0">
+    <img src="/images/soup.png" class="w-20 h-20 rounded-full object-cover mx-auto">
+    <p class="mt-2 text-sm font-semibold">Soup</p>
+  </div>
+</div>
+
+
+<script>
+  function redirectToMenu(category) {
+    window.location.href = `/menu?category=${category}`;
+  }
+</script>
+
+
             <!-- Gallary -->
 <section class="py-12 bg-white">
   <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Our Gallery</h2>

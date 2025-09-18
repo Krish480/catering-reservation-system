@@ -6,37 +6,41 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="icon" href="/images/logo.png">
   <link rel="stylesheet" href="./css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 </head>
 <body class="bg-gray-50 font-sans">
+  
+  <!-- Header -->
   <%- include("../partials/header") %>
-  <br>
-  <br>
+  <br><br>
+
   <!-- Menu Section -->
-  <section class="container mx-auto py-16 px-6">
-    <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Our Menu</h2>
-    <div id="menu-container" class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-      <!-- Items dynamically injected from JSON -->
+  <section class="container mx-auto py-12 px-6">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Our Menu</h2>
+    <p class="text-center text-gray-500 mb-10">Choose from our delicious varieties</p>
+
+    <div id="menu-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      <!-- Items dynamically injected -->
     </div>
   </section>
 
+  <!-- Footer -->
   <%- include("../partials/footer") %>
 
   <script>
   let menuItemsCache = [];
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-  // Utility
   function saveCart(){ 
     localStorage.setItem('cart', JSON.stringify(cart));
     updateCartCount();
   }
+
   function updateCartCount(){
     const count = cart.reduce((s,i)=> s + (i.quantity||1), 0);
     const el = document.getElementById('cart-count');
     if(el) el.textContent = count;
   }
+
   function showToast(msg){
     const t = document.createElement('div');
     t.textContent = msg;
@@ -55,28 +59,58 @@
       menuItemsCache = items; 
       menuContainer.innerHTML = "";
 
-      items.forEach(item => {
+      // URL param check
+      const params = new URLSearchParams(window.location.search);
+      const category = params.get("category");  
+
+      let filteredItems = items;
+      if(category){
+        filteredItems = items.filter(i => i.category?.toLowerCase() === category.toLowerCase());
+      }
+
+      if(filteredItems.length === 0){
+        menuContainer.innerHTML = "<p class='text-center text-gray-500 col-span-3'>No items found in this category.</p>";
+        return;
+      }
+
+      filteredItems.forEach(item => {
         const card = document.createElement('div');
-        card.className = 'bg-white p-6 shadow-md rounded-xl hover:shadow-xl transition';
+        card.className = 'bg-white p-5 shadow-md rounded-xl hover:shadow-xl transition relative cursor-pointer';
+        card.addEventListener('click', ()=> {
+          window.location.href = `/product?id=${item.id}`;
+
+        });
+
+        // Offer badge
+        if(item.offer){
+          const badge = document.createElement('span');
+          badge.textContent = item.offer;
+          badge.className = 'absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded';
+          card.appendChild(badge);
+        }
 
         const img = document.createElement('img');
         img.src = item.imageUrl;
         img.alt = item.name;
-        img.className = 'w-full object-cover rounded-md drop-shadow-[0_10px_15px_rgba(0,0,0,0.35)] mx-auto';
+        img.className = 'w-full h-50 object-cover rounded-md cursor-pointer drop-shadow-lg';
 
         const title = document.createElement('h3');
-        title.className = 'mt-4 text-xl font-semibold text-gray-800 text-center';
+        title.className = 'mt-4 text-lg font-semibold text-gray-800 text-center cursor-pointer';
         title.textContent = item.name;
+        title.addEventListener('click', ()=> {
+          window.location.href = `/product?id=${item.id}`;
+
+        });
 
         const price = document.createElement('p');
-        price.className = 'text-gray-600 text-center';
+        price.className = 'text-lg font-bold text-orange-600 mt-2 text-center';
         price.textContent = '₹' + item.price;
 
         const btnWrap = document.createElement('div');
         btnWrap.className = 'text-center';
 
         const btn = document.createElement('button');
-        btn.className = 'mt-4 bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700';
+        btn.className = 'mt-3 bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition';
         btn.textContent = 'Add to Cart';
         btn.dataset.id = item.id;
         btn.addEventListener('click', () => addToCartById(item.id));
@@ -108,12 +142,10 @@
     showToast(item.name + ' added to cart 🛒');
   }
 
-  // on page load
   window.addEventListener('DOMContentLoaded', () => {
     loadMenu();
     updateCartCount();
   });
-</script>
-
+  </script>
 </body>
 </html>

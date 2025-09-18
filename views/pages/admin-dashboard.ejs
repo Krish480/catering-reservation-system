@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen p-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold text-orange-600">Admin Dashboard</h1>
+      <a href="/admin/logout" class="text-sm text-red-600">Logout</a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+      <div class="bg-white p-6 rounded shadow">
+        <div class="text-sm text-gray-500">Products</div>
+        <div class="text-3xl font-bold"><%= productsCount %></div>
+        <a href="/admin/products" class="text-orange-600 text-sm mt-2 inline-block">Manage products →</a>
+      </div>
+
+      <div class="bg-white p-6 rounded shadow">
+        <div class="text-sm text-gray-500">Orders</div>
+        <div class="text-3xl font-bold"><%= ordersCount %></div>
+        <a href="/admin/orders" class="text-orange-600 text-sm mt-2 inline-block">View orders →</a>
+      </div>
+
+      <div class="bg-white p-6 rounded shadow">
+        <div class="text-sm text-gray-500">Quick Links</div>
+        <div class="mt-3 space-y-2">
+          <a href="/admin/products/new" class="block text-sm bg-orange-600 text-white px-3 py-2 rounded">Add Product</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

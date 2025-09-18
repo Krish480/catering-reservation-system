@@ -3,11 +3,9 @@ const express = require("express");
 const app = express();
 const port = 8080;
 const path = require("path");
+const fs = require("fs");
 require("dotenv").config();
 const session = require("express-session");
-
-
-
 
 // Routers
 const authRouter = require("./routes/auth");
@@ -46,23 +44,47 @@ app.use((req, res, next) => {
 });
 
 
+// ----------------- Routes -----------------
 
 // Home
 app.get("/", (req, res) => {
-  res.render("pages/index", { title: "MealMatrix", });
+  res.render("pages/index", { title: "MealMatrix" });
 });
 
-// ensureAuth usage on protected routes (example)
-const { ensureAuth } = require('./middlewares/auth');
-app.get('/profile', ensureAuth, (req, res) => res.render('pages/profile', { user: req.session.user }));
+// Auth middleware
+const { ensureAuth } = require("./middlewares/auth");
 
-app.get('/orders', ensureAuth, (req, res) => {
-  res.render('pages/orders');
+// Profile (protected)
+app.get("/profile", ensureAuth, (req, res) =>
+  res.render("pages/profile", { user: req.session.user })
+);
+
+// Orders (protected)
+app.get("/orders", ensureAuth, (req, res) => {
+  res.render("pages/orders");
 });
 
 // Menu
 app.get("/menu", (req, res) => {
   res.render("pages/menu");
+});
+
+// Product (dynamic by id from menu.json)
+app.get("/product", (req, res) => {
+  const id = req.query.id;
+
+  try {
+    const menuData = JSON.parse(
+      fs.readFileSync(path.join(__dirname, "data/menu.json"), "utf-8")
+    );
+
+    const product = menuData.find((p) => String(p.id) === String(id));
+
+    res.render("pages/product", { product });
+  } catch (err) {
+    console.error("Error reading menu.json:", err);
+    res.render("pages/product", { product: null });
+  }
 });
 
 // Cart
@@ -88,52 +110,23 @@ app.get("/contact", (req, res) => {
 // Auth routes
 app.use("/auth", authRouter);
 
-//login
+// login redirect
 app.get("/login", (req, res) => res.redirect("/auth/login"));
 
-// register
+// register redirect
 app.get("/register", (req, res) => res.redirect("/auth/register"));
 
-
-//logout
+// logout
 app.get("/logout", (req, res) => {
   req.session.destroy(() => {
     res.redirect("/login");
   });
 });
 
-
-
-
-// Admin Credentials (sirf server-side safe)
-const ADMIN_EMAIL = "admin@gmail.com";
-const ADMIN_PASS = "admin123";
-
-// Render admin login page
-app.get("/admin-login", (req, res) => {
-  res.render("pages/admin-login", { title: "Admin Login" });
-});
-
-// Handle admin login form submit
-app.post("/admin-login", (req, res) => {
-  const { email, password } = req.body;
-
-  if (email === ADMIN_EMAIL && password === ADMIN_PASS) {
-    res.redirect("/admin"); // Success
-  } else {
-    res.send("❌ Invalid credentials, try again.");
-  }
-});
-
-// Admin Dashboard Page
-app.get("/admin", (req, res) => {
-  res.render("pages/admin", { title: "Admin Dashboard" });
-});
-
-// Import and use Admin routes (upload, orders, etc.)
+// ----------------- Admin Routes -----------------
 app.use("/admin", adminRoutes);
 
-// Server Start
+// ----------------- Server Start -----------------
 app.listen(port, () => {
   console.log(`🚀 App is listening on port ${port}`);
 });

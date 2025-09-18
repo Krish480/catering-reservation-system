@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        <%= product ? product.name : "Product" %> - MealMatrix
+    </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="/images/logo.png">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body class="bg-gray-50 font-sans">
+
+    <!-- Header -->
+    <%- include("../partials/header") %>
+        <br><br>
+
+        <section class="container mx-auto py-12 px-6">
+            <% if(product) { %>
+                <div class="bg-white shadow-lg rounded-xl p-6 flex flex-col md:flex-row gap-8">
+
+                    <div class="flex-1">
+                        <img src="<%= product.imageUrl %>" alt="<%= product.name %>"
+                            class="rounded-lg w-full h-90 object-cover drop-shadow-lg">
+                    </div>
+
+                    <div class="flex-1">
+                        <h1 class="text-3xl font-bold text-gray-800">
+                            <%= product.name %>
+                        </h1>
+                        <p class="mt-2 text-gray-600 text-sm">
+                            <%= product.description || "Delicious freshly prepared dish made with love ❤️" %>
+                        </p>
+                        <p class="mt-4 text-2xl font-bold text-orange-600">₹<%= product.price %>
+                        </p>
+
+                        <div class="mt-6 flex gap-4">
+                            <button onclick="addToCart('<%= product.id %>')"
+                                class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition">Add
+                                to Cart</button>
+                            <a href="/menu"
+                                class="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition">Back
+                                to Menu</a>
+                        </div>
+                    </div>
+
+                </div>
+                <% } else { %>
+                    <p class="text-center text-red-500">Product not found!</p>
+                    <% } %>
+        </section>
+
+        <!-- Footer -->
+        <%- include("../partials/footer") %>
+
+            <script>
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+                function saveCart() {
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    updateCartCount();
+                }
+
+                function updateCartCount() {
+                    const count = cart.reduce((s, i) => s + (i.quantity || 1), 0);
+                    const el = document.getElementById('cart-count');
+                    if (el) el.textContent = count;
+                }
+
+                function showToast(msg) {
+                    const t = document.createElement('div');
+                    t.textContent = msg;
+                    t.className = 'fixed bottom-6 right-6 bg-gray-800 text-white px-4 py-2 rounded shadow';
+                    document.body.appendChild(t);
+                    setTimeout(() => t.remove(), 1700);
+                }
+
+                function addToCart(id) {
+                    const item = {
+                        id: "<%= product.id %>",
+                        name: "<%= product.name %>",
+                        price: "<%= product.price %>",  
+                        imageUrl: "<%= product.imageUrl %>"
+                    };
+
+                    const existing = cart.find(x => String(x.id) === String(id));
+                    if (existing) existing.quantity = (existing.quantity || 1) + 1;
+                    else cart.push({ ...item, quantity: 1 });
+
+                    saveCart();
+                    showToast(item.name + ' added to cart 🛒');
+                }
+
+
+                window.addEventListener('DOMContentLoaded', () => updateCartCount());
+            </script>
+</body>
+
+</html>

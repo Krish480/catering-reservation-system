@@ -1,26 +1,146 @@
 [
   {
+    "id": "eb876d19-5355-4b03-89fd-3c1dbfc01248",
     "name": "Paneer Butter Masala",
     "price": 250,
     "imageUrl": "/images/paneer_masala.png",
-    "id": "eb876d19-5355-4b03-89fd-3c1dbfc01248"
+    "category": "paneer",
+    "description": "Rich and creamy paneer butter masala with authentic spices.",
+    "offer": "10% OFF"
   },
   {
+    "id": "73aa20af-033b-48f7-9135-72af8d85a773",
     "name": "Veg Biryani",
     "price": 180,
     "imageUrl": "/images/Veg_biryani.png",
-    "id": "73aa20af-033b-48f7-9135-72af8d85a773"
+    "category": "biryani",
+    "description": "Aromatic rice cooked with fresh vegetables and spices.",
+    "offer": "15% OFF"
   },
   {
+    "id": "ef82b16b-72f7-46e7-893b-7c25795a2d08",
     "name": "Chole Bhature",
     "price": 120,
     "imageUrl": "/images/chhole_bhature.png",
-    "id": "ef82b16b-72f7-46e7-893b-7c25795a2d08"
+    "category": "chole",
+    "description": "Crispy bhature with spicy chole masala.",
+    "offer": "5% OFF"
   },
   {
+    "id": "c6c0cbb7-128a-4ebb-98b6-acd284debace",
     "name": "Masala Dosa",
     "price": 150,
     "imageUrl": "/images/masala_dosa.png",
-    "id": "c6c0cbb7-128a-4ebb-98b6-acd284debace"
+    "category": "South-indian",
+    "description": "Crispy dosa stuffed with masala aloo filling.",
+    "offer": "10% OFF"
+  },
+  {
+    "name": "Noodles",
+    "price": 150,
+    "imageUrl": "/images/Noodels.png",
+    "category": "noodles",
+    "description": "Delicious stir-fried noodles with vegetables and sauces.",
+    "offer": "10% OFF",
+    "id": "10dcf115-f977-4e9c-a5b3-fd278307de36"
+  },
+  {
+    "name": "Pasta",
+    "price": 200,
+    "imageUrl": "/images/pasta.png",
+    "category": "pasta",
+    "description": "Creamy pasta cooked with fresh herbs and cheese.",
+    "offer": "15% OFF",
+    "id": "1cff69a5-a125-4f84-be6e-28622848f306"
+  },
+  {
+    "name": "Ice Cream",
+    "price": 120,
+    "imageUrl": "/images/ice-cream.png",
+    "category": "dessert",
+    "description": "Chilled ice cream with rich flavors.",
+    "offer": "5% OFF",
+    "id": "4cfef07e-5d67-4def-940e-ff667f7c9136"
+  },
+  {
+    "name": "Juice",
+    "price": 80,
+    "imageUrl": "/images/juice.png",
+    "category": "beverages",
+    "description": "Refreshing natural fruit juice.",
+    "offer": "10% OFF",
+    "id": "09f898aa-fec8-46e5-9e13-ca5546222fc9"
+  },
+  {
+    "name": "Coffee",
+    "price": 100,
+    "imageUrl": "/images/coffee.png",
+    "category": "beverages",
+    "description": "Hot brewed coffee with rich aroma.",
+    "offer": "20% OFF",
+    "id": "aceb0c8a-e0be-4844-b71d-cc454d7774de"
+  },
+  {
+    "name": "Sandwich",
+    "price": 130,
+    "imageUrl": "/images/sandwich.png",
+    "category": "snacks",
+    "description": "Fresh sandwich filled with veggies and sauces.",
+    "offer": "10% OFF",
+    "id": "dc54de47-95ea-48f4-bd61-c7f93410a2d0"
+  },
+  {
+    "name": "Fries",
+    "price": 90,
+    "imageUrl": "/images/fries.png",
+    "category": "snacks",
+    "description": "Crispy golden French fries with seasoning.",
+    "offer": "15% OFF",
+    "id": "8873b231-9d9e-48ce-aacb-8325979f14fc"
+  },
+  {
+    "name": "Samosa",
+    "price": 50,
+    "imageUrl": "/images/samosa.png",
+    "category": "snacks",
+    "description": "Crispy fried samosa stuffed with spiced potatoes.",
+    "offer": "5% OFF",
+    "id": "cd3aec7d-5260-4d0f-abf4-0e1cced5724e"
+  },
+  {
+    "name": "Momos",
+    "price": 120,
+    "imageUrl": "/images/momos.png",
+    "category": "snacks",
+    "description": "Steamed momos served with spicy chutney.",
+    "offer": "10% OFF",
+    "id": "9758af23-118a-4821-9b75-0776497e0e91"
+  },
+  {
+    "name": "Tacos",
+    "price": 180,
+    "imageUrl": "/images/tacos.png",
+    "category": "mexican",
+    "description": "Crunchy tacos filled with veggies and sauces.",
+    "offer": "20% OFF",
+    "id": "af9cad1f-407e-450f-88b6-b958dcbad6dd"
+  },
+  {
+    "name": "Salad",
+    "price": 140,
+    "imageUrl": "/images/salad.png",
+    "category": "healthy",
+    "description": "Fresh vegetable salad with dressing.",
+    "offer": "10% OFF",
+    "id": "8bd7b030-9fe8-461a-886a-ea46b5c106d7"
+  },
+  {
+    "name": "Soup",
+    "price": 110,
+    "imageUrl": "/images/soup.png",
+    "category": "healthy",
+    "description": "Hot soup made with fresh vegetables.",
+    "offer": "15% OFF",
+    "id": "dcbbcdb4-ff16-4a84-a0d7-a52572ac7535"
   }
 ]

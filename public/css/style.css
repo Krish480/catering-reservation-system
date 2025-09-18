@@ -69,3 +69,12 @@ footer {
 
 /* navbar navigation */
 
+.category-container {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.category-container::-webkit-scrollbar {
+    display: none;
+}
