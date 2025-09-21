@@ -7,7 +7,7 @@ const fs = require('fs').promises;
 const { v4: uuidv4 } = require('uuid');
 const { ensureAdmin } = require('../middlewares/adminAuth');
 
-const DATA_DIR = path.join(__dirname, '..', 'data');
+const DATA_DIR = path.join(__dirname, '..', 'public', 'data');
 const MENU_FILE = path.join(DATA_DIR, 'menu.json');
 const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
 const UPLOAD_DIR = path.join(__dirname, '..', 'public', 'images', 'products');

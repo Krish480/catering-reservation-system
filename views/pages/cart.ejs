@@ -3,15 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MealMatrix-Cart</title>
+  <title>MealMatrix - Cart</title>
   <link rel="icon" href="/images/logo.png">
   <link rel="stylesheet" href="./css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
   
-<!-- cart.ejs -->
 <%- include("../partials/header") %>
 
 <section class="container mx-auto py-16 px-6">
@@ -20,7 +18,15 @@
 
   <div id="checkout-area" class="text-center mt-8">
     <p id="cart-total" class="text-xl font-semibold mb-4"></p>
-    <button id="checkout-btn" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700">Checkout</button>
+    
+    <!-- Order Form -->
+    <form id="order-form" action="/order" method="POST">
+      <input type="hidden" name="cartData" id="cartData">
+      <button type="submit"
+        class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition">
+        Place Order
+      </button>
+    </form>
   </div>
 </section>
 
@@ -36,8 +42,11 @@
     if(cart.length === 0){
       container.innerHTML = "<p class='text-center text-gray-600'>Your cart is empty 🛒</p>";
       document.getElementById('cart-total').textContent = '';
+      document.getElementById('order-form').style.display = 'none';
       return;
     }
+
+    document.getElementById('order-form').style.display = 'block';
 
     cart.forEach(item => {
       const row = document.createElement('div');
@@ -46,32 +55,38 @@
       const left = document.createElement('div');
       left.className = 'flex items-center gap-4';
       const img = document.createElement('img');
-      img.src = item.imageUrl; img.className = 'w-20 h-20 object-cover rounded-md';
+      img.src = item.imageUrl; 
+      img.className = 'w-20 h-20 object-cover rounded-md';
       const info = document.createElement('div');
       info.innerHTML = `<h3 class="font-semibold">${item.name}</h3><p>₹${item.price}</p>`;
-      left.appendChild(img); left.appendChild(info);
+      left.appendChild(img); 
+      left.appendChild(info);
 
       const right = document.createElement('div');
       right.className = 'flex items-center gap-4';
       const qtyBox = document.createElement('div');
       qtyBox.className = 'flex items-center gap-2';
-      const minus = document.createElement('button'); minus.textContent = '-';
+      const minus = document.createElement('button'); 
+      minus.textContent = '-';
       minus.className = 'px-2 py-1 bg-gray-200 rounded';
-      minus.addEventListener('click', ()=> changeQty(item.id, -1));
+      minus.addEventListener('click', (e)=> { e.preventDefault(); changeQty(item.id, -1); });
       const qty = document.createElement('span'); qty.textContent = item.quantity;
-      const plus = document.createElement('button'); plus.textContent = '+';
+      const plus = document.createElement('button'); 
+      plus.textContent = '+';
       plus.className = 'px-2 py-1 bg-gray-200 rounded';
-      plus.addEventListener('click', ()=> changeQty(item.id, +1));
+      plus.addEventListener('click', (e)=> { e.preventDefault(); changeQty(item.id, +1); });
       qtyBox.appendChild(minus); qtyBox.appendChild(qty); qtyBox.appendChild(plus);
 
       const remove = document.createElement('button');
       remove.className = 'text-red-500';
       remove.textContent = 'Remove';
-      remove.addEventListener('click', ()=> removeFromCart(item.id));
+      remove.addEventListener('click', (e)=> { e.preventDefault(); removeFromCart(item.id); });
 
-      right.appendChild(qtyBox); right.appendChild(remove);
+      right.appendChild(qtyBox); 
+      right.appendChild(remove);
 
-      row.appendChild(left); row.appendChild(right);
+      row.appendChild(left); 
+      row.appendChild(right);
       container.appendChild(row);
     });
 
@@ -87,7 +102,6 @@
     }
     localStorage.setItem('cart', JSON.stringify(cart));
     renderCart();
-    // also update header count (if header present)
     if(window.updateCartCount) window.updateCartCount();
   }
 
@@ -103,21 +117,15 @@
     document.getElementById('cart-total').textContent = 'Total: ₹' + total;
   }
 
-  document.getElementById('checkout-btn').addEventListener('click', ()=> {
-    if(cart.length === 0) return alert('Cart is empty');
-    // For now just clear and show message. Later post to server.
-    alert('Checkout demo: Order placed (demo).');
-    cart = [];
-    localStorage.removeItem('cart');
-    renderCart();
-    if(window.updateCartCount) window.updateCartCount();
+  // Before submitting form, pass cart data
+  document.getElementById("order-form").addEventListener("submit", function(){
+    document.getElementById("cartData").value = JSON.stringify(cart);
+    localStorage.removeItem("cart");
   });
 
   // INIT
   document.addEventListener('DOMContentLoaded', renderCart);
 </script>
 
-<!-- Tailwind css link -->
-<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>  
 </body>
 </html>

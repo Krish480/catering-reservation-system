@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>MealMatrix - Menu</title>
@@ -7,18 +8,33 @@
   <link rel="icon" href="/images/logo.png">
   <link rel="stylesheet" href="./css/style.css">
 </head>
+
 <body class="bg-gray-50 font-sans">
-  
+
   <!-- Header -->
   <%- include("../partials/header") %>
-  <br><br>
+  <br class="hidden"><br class="hidden">
+  <br>
+  <br>
 
   <!-- Menu Section -->
-  <section class="container mx-auto py-12 px-6">
-    <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Our Menu</h2>
-    <p class="text-center text-gray-500 mb-10">Choose from our delicious varieties</p>
+  <section class="container mx-auto py-12 px-4">
+    <div class="max-w-4xl mx-auto text-center mb-8">
+      <h2 class="text-3xl font-bold text-gray-800">Our Menu</h2>
+      <p class="text-gray-500 mt-2">Choose from our delicious varieties</p>
+    </div>
 
-    <div id="menu-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+    <!-- Search bar -->
+    <div class="max-w-md mx-auto mb-8">
+      <form id="search-form" class="flex">
+        <input type="text" name="q" id="search-input" placeholder="Search for meals..."
+          class="w-full px-4 py-2 border rounded-l-lg focus:outline-none">
+        <button type="submit"
+          class="bg-orange-600 text-white px-4 py-2 rounded-r-lg hover:bg-orange-700 transition">Search</button>
+      </form>
+    </div>
+
+    <div id="menu-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       <!-- Items dynamically injected -->
     </div>
   </section>
@@ -27,125 +43,200 @@
   <%- include("../partials/footer") %>
 
   <script>
-  let menuItemsCache = [];
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let menuItemsCache = [];
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
-  function saveCart(){ 
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartCount();
-  }
+    function saveCart() {
+      localStorage.setItem('cart', JSON.stringify(cart));
+      if (typeof updateCartCount === 'function') updateCartCount();
+    }
 
-  function updateCartCount(){
-    const count = cart.reduce((s,i)=> s + (i.quantity||1), 0);
-    const el = document.getElementById('cart-count');
-    if(el) el.textContent = count;
-  }
+    function updateCartCount() {
+      const count = cart.reduce((s, i) => s + (i.quantity || 1), 0);
+      const el = document.getElementById('cart-count');
+      if (el) el.textContent = count;
+    }
 
-  function showToast(msg){
-    const t = document.createElement('div');
-    t.textContent = msg;
-    t.className = 'fixed bottom-6 right-6 bg-gray-800 text-white px-4 py-2 rounded shadow';
-    document.body.appendChild(t);
-    setTimeout(()=> t.remove(), 1700);
-  }
+    function showToast(msg) {
+      const t = document.createElement('div');
+      t.textContent = msg;
+      t.className = 'fixed top-6 right-4 bg-black/80 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 1500);
+    }
 
-  async function loadMenu() {
-    const menuContainer = document.getElementById("menu-container");
-    menuContainer.innerHTML = "<p class='text-center col-span-3'>Loading menu...</p>";
+    async function loadMenu() {
+      const menuContainer = document.getElementById("menu-container");
+      menuContainer.innerHTML = `<div class="col-span-full text-center py-8 text-gray-500">Loading menu...</div>`;
 
-    try {
-      const res = await fetch("/data/menu.json");
-      const items = await res.json();
-      menuItemsCache = items; 
-      menuContainer.innerHTML = "";
+      try {
+        const res = await fetch("/data/menu.json");
+        if (!res.ok) throw new Error('Failed to fetch menu.json');
+        const items = await res.json();
+        menuItemsCache = items || [];
+        menuContainer.innerHTML = "";
 
-      // URL param check
-      const params = new URLSearchParams(window.location.search);
-      const category = params.get("category");  
+        // URL category filter
+        const params = new URLSearchParams(window.location.search);
+        const category = (params.get("category") || "").toLowerCase().trim();
 
-      let filteredItems = items;
-      if(category){
-        filteredItems = items.filter(i => i.category?.toLowerCase() === category.toLowerCase());
-      }
-
-      if(filteredItems.length === 0){
-        menuContainer.innerHTML = "<p class='text-center text-gray-500 col-span-3'>No items found in this category.</p>";
-        return;
-      }
-
-      filteredItems.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'bg-white p-5 shadow-md rounded-xl hover:shadow-xl transition relative cursor-pointer';
-        card.addEventListener('click', ()=> {
-          window.location.href = `/product?id=${item.id}`;
-
-        });
-
-        // Offer badge
-        if(item.offer){
-          const badge = document.createElement('span');
-          badge.textContent = item.offer;
-          badge.className = 'absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded';
-          card.appendChild(badge);
+        let filteredItems = menuItemsCache;
+        if (category) {
+          filteredItems = menuItemsCache.filter(i => String(i.category || "").toLowerCase() === category);
         }
 
-        const img = document.createElement('img');
-        img.src = item.imageUrl;
-        img.alt = item.name;
-        img.className = 'w-full h-50 object-cover rounded-md cursor-pointer drop-shadow-lg';
+        if (!filteredItems || filteredItems.length === 0) {
+          menuContainer.innerHTML = `<div class="col-span-full text-center py-12 text-gray-500">No items found in this category.</div>`;
+          return;
+        }
 
-        const title = document.createElement('h3');
-        title.className = 'mt-4 text-lg font-semibold text-gray-800 text-center cursor-pointer';
-        title.textContent = item.name;
-        title.addEventListener('click', ()=> {
-          window.location.href = `/product?id=${item.id}`;
+        // render cards
+        filteredItems.forEach(item => {
+          const card = document.createElement('article');
+          card.setAttribute('role', 'link');
+          card.tabIndex = 0;
+          card.setAttribute('data-id', item.id); // For search filter
+          card.className = 'bg-white p-4 shadow-sm rounded-xl hover:shadow-lg transition cursor-pointer flex flex-col';
 
+          card.addEventListener('keydown', (ev) => {
+            if (ev.key === 'Enter') window.location.href = `/product?id=${encodeURIComponent(item.id)}`;
+          });
+
+          card.addEventListener('click', () => {
+            window.location.href = `/product/${item.id}`;
+          });
+
+          const imgWrap = document.createElement('div');
+          imgWrap.className = 'relative rounded-md overflow-hidden';
+
+          const img = document.createElement('img');
+          img.src = item.imageUrl || '/images/default-product.png';
+          img.alt = item.name || 'Product';
+          img.className = 'w-90 h-90 sm:h-40 md:h-36 lg:h-44 object-cover';
+
+          imgWrap.appendChild(img);
+
+          if (item.offer) {
+            const badge = document.createElement('span');
+            badge.textContent = item.offer;
+            badge.className = 'absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded';
+            imgWrap.appendChild(badge);
+          }
+
+          const content = document.createElement('div');
+          content.className = 'mt-3 flex-1 flex flex-col';
+
+          const title = document.createElement('h3');
+          title.className = 'text-gray-800 text-lg font-semibold text-center';
+          title.textContent = item.name || 'Unnamed';
+
+          const desc = document.createElement('p');
+          desc.className = 'text-sm text-gray-500 mt-2 text-center';
+          desc.style.maxHeight = '3rem';
+          desc.style.overflow = 'hidden';
+          desc.textContent = item.description || '';
+
+          const priceRow = document.createElement('div');
+          priceRow.className = 'mt-3 flex items-center justify-center gap-4';
+
+          const price = document.createElement('div');
+          price.className = 'text-orange-600 font-bold text-lg';
+          price.textContent = '₹' + (Number(item.price || 0));
+
+          priceRow.appendChild(price);
+
+          const actions = document.createElement('div');
+          actions.className = 'mt-4 flex items-center justify-center gap-3';
+
+          const addBtn = document.createElement('button');
+          addBtn.className = 'bg-orange-600 text-white px-4 py-2 rounded-full text-sm hover:bg-orange-700 transition';
+          addBtn.textContent = 'Add to Cart';
+
+          addBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            addToCartById(item.id);
+          });
+
+          const viewBtn = document.createElement('a');
+          viewBtn.href = `/product/${item.id}`;
+          viewBtn.className = 'border border-gray-200 px-4 py-2 rounded-full text-sm text-gray-700 hover:bg-gray-50 transition';
+          viewBtn.textContent = 'View details';
+
+          actions.appendChild(addBtn);
+          actions.appendChild(viewBtn);
+
+          content.appendChild(title);
+          content.appendChild(desc);
+          content.appendChild(priceRow);
+          content.appendChild(actions);
+
+          card.appendChild(imgWrap);
+          card.appendChild(content);
+
+          menuContainer.appendChild(card);
         });
 
-        const price = document.createElement('p');
-        price.className = 'text-lg font-bold text-orange-600 mt-2 text-center';
-        price.textContent = '₹' + item.price;
-
-        const btnWrap = document.createElement('div');
-        btnWrap.className = 'text-center';
-
-        const btn = document.createElement('button');
-        btn.className = 'mt-3 bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition';
-        btn.textContent = 'Add to Cart';
-        btn.dataset.id = item.id;
-        btn.addEventListener('click', () => addToCartById(item.id));
-
-        btnWrap.appendChild(btn);
-        card.appendChild(img);
-        card.appendChild(title);
-        card.appendChild(price);
-        card.appendChild(btnWrap);
-
-        menuContainer.appendChild(card);
-      });
-
-    } catch (err) {
-      console.error(err);
-      menuContainer.innerHTML = "<p class='text-red-500'>Failed to load menu data.</p>";
+      } catch (err) {
+        console.error(err);
+        menuContainer.innerHTML = "<div class='col-span-full text-center text-red-500 py-8'>Failed to load menu data.</div>";
+      }
     }
-  }
 
-  function addToCartById(id){
-    const item = menuItemsCache.find(x => String(x.id) === String(id));
-    if(!item){ alert('Item not found'); return; }
+    function addToCartById(id) {
+      const item = menuItemsCache.find(x => String(x.id) === String(id));
+      if (!item) { alert('Item not found'); return; }
+      const existing = cart.find(x => String(x.id) === String(id));
+      if (existing) existing.quantity = (existing.quantity || 1) + 1;
+      else cart.push({ id: item.id, name: item.name, price: Number(item.price || 0), imageUrl: item.imageUrl, quantity: 1 });
+      saveCart();
+      showToast(item.name + ' added to cart 🛒');
+    }
 
-    const existing = cart.find(x => String(x.id) === String(id));
-    if(existing) existing.quantity = (existing.quantity||1) + 1;
-    else cart.push({ id: item.id, name: item.name, price: item.price, imageUrl: item.imageUrl, quantity: 1 });
+    window.addEventListener('DOMContentLoaded', () => {
+      loadMenu().then(() => {
+        updateCartCount();
 
-    saveCart();
-    showToast(item.name + ' added to cart 🛒');
-  }
+        // Search bar submit
+        const searchForm = document.getElementById('search-form');
+        const searchInput = document.getElementById('search-input');
 
-  window.addEventListener('DOMContentLoaded', () => {
-    loadMenu();
-    updateCartCount();
-  });
+        // Prefill search input from query param
+        const params = new URLSearchParams(window.location.search);
+        const searchQuery = (params.get("q") || "").toLowerCase().trim();
+        if (searchQuery) searchInput.value = params.get("q");
+
+        searchForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const query = searchInput.value.trim();
+          const url = new URL(window.location.href);
+          if (query) url.searchParams.set('q', query);
+          else url.searchParams.delete('q');
+          window.location.href = url.toString(); // reload page with search param
+        });
+
+        // Apply search filter after menu loaded
+        if (searchQuery) {
+          const menuContainer = document.getElementById("menu-container");
+          const filteredItems = menuItemsCache.filter(item =>
+            item.name.toLowerCase().includes(searchQuery) ||
+            (item.description && item.description.toLowerCase().includes(searchQuery))
+          );
+
+          menuContainer.querySelectorAll('article').forEach(card => card.style.display = 'none');
+
+          if (filteredItems.length === 0) {
+            menuContainer.innerHTML = `<div class="col-span-full text-center py-12 text-gray-500">No items found.</div>`;
+          } else {
+            filteredItems.forEach(item => {
+              const card = menuContainer.querySelector(`article[data-id="${item.id}"]`);
+              if (card) card.style.display = 'flex';
+            });
+          }
+        }
+
+      });
+    });
   </script>
 </body>
+
 </html>

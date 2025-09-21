@@ -1,5 +1,23 @@
 [
   {
+    "id": "bde2e3ed-08ab-40bf-9ba8-e592c5ac5268",
+    "name": "Dragon Fruite Juice",
+    "price": 150,
+    "description": "Fresh and healthy dragon fruit juice, packed with vitamins and antioxidants.",
+    "category": "juice",
+    "offer": "5% OFF",
+    "imageUrl": "/images/products/31698b88-265f-4576-afcf-35a166d96f19.png"
+  },
+  {
+    "id": "bc5b35e8-750a-49d1-a31b-d914161fc56d",
+    "name": "Chocolate Cake",
+    "price": 250,
+    "description": "Rich and moist chocolate cake topped with chocolate frosting.",
+    "category": "desert",
+    "offer": "10% OFF",
+    "imageUrl": "/images/products/9fca13c5-3245-4794-9cc9-50c49b182fa5.png"
+  },
+  {
     "id": "eb876d19-5355-4b03-89fd-3c1dbfc01248",
     "name": "Paneer Butter Masala",
     "price": 250,
@@ -63,15 +81,6 @@
     "id": "4cfef07e-5d67-4def-940e-ff667f7c9136"
   },
   {
-    "name": "Juice",
-    "price": 80,
-    "imageUrl": "/images/juice.png",
-    "category": "beverages",
-    "description": "Refreshing natural fruit juice.",
-    "offer": "10% OFF",
-    "id": "09f898aa-fec8-46e5-9e13-ca5546222fc9"
-  },
-  {
     "name": "Coffee",
     "price": 100,
     "imageUrl": "/images/coffee.png",
@@ -83,7 +92,7 @@
   {
     "name": "Sandwich",
     "price": 130,
-    "imageUrl": "/images/sandwich.png",
+    "imageUrl": "/images/savory chicken club sandwich.png",
     "category": "snacks",
     "description": "Fresh sandwich filled with veggies and sauces.",
     "offer": "10% OFF",
@@ -110,8 +119,8 @@
   {
     "name": "Momos",
     "price": 120,
-    "imageUrl": "/images/momos.png",
-    "category": "snacks",
+    "imageUrl": "/images/traditional newari momos on white.png",
+    "category": "momos",
     "description": "Steamed momos served with spicy chutney.",
     "offer": "10% OFF",
     "id": "9758af23-118a-4821-9b75-0776497e0e91"
@@ -119,8 +128,8 @@
   {
     "name": "Tacos",
     "price": 180,
-    "imageUrl": "/images/tacos.png",
-    "category": "mexican",
+    "imageUrl": "/images/tacos food.png",
+    "category": "tacos",
     "description": "Crunchy tacos filled with veggies and sauces.",
     "offer": "20% OFF",
     "id": "af9cad1f-407e-450f-88b6-b958dcbad6dd"
@@ -137,10 +146,37 @@
   {
     "name": "Soup",
     "price": 110,
-    "imageUrl": "/images/soup.png",
+    "imageUrl": "/images/steaming hot soup.png",
     "category": "healthy",
     "description": "Hot soup made with fresh vegetables.",
     "offer": "15% OFF",
     "id": "dcbbcdb4-ff16-4a84-a0d7-a52572ac7535"
+  },
+  {
+    "name": "Pizza",
+    "price": 300,
+    "imageUrl": "/images/pizza.png",
+    "category": "pizza",
+    "description": "Delicious cheesy pizza with fresh toppings and soft crust.",
+    "offer": "20% OFF",
+    "id": "4b2ce260-2bd4-4f49-8d81-8d00d3156650"
+  },
+  {
+    "name": "Burger",
+    "price": 180,
+    "imageUrl": "/images/burger.png",
+    "category": "burger",
+    "description": "Juicy burger with crispy patty, fresh veggies and sauces.",
+    "offer": "15% OFF",
+    "id": "688d4da4-3590-4b34-b80a-dc8a579af1fc"
+  },
+  {
+    "name": "Rolls",
+    "price": 160,
+    "imageUrl": "/images/rolls.png",
+    "category": "snacks",
+    "description": "Tasty rolls stuffed with veggies and spices, served with chutney.",
+    "offer": "10% OFF",
+    "id": "21162103-eec2-4cf4-9621-2d9b0ab444c2"
   }
 ]

@@ -19,14 +19,26 @@
   <!-- Orders Section -->
   <section class="py-10">
     <div class="container mx-auto px-4">
-      <br>
-      <br>
-      <br>
       <h2 class="text-3xl font-bold text-orange-600 mb-6">My Orders</h2>
 
-      <!-- Orders List -->
       <div id="ordersList" class="space-y-4">
-        <!-- Dynamic orders -->
+        <% if (orders && orders.length > 0) { %>
+          <% orders.forEach(order => { %>
+            <div class="bg-white shadow-md rounded-lg p-4 flex items-center justify-between hover:shadow-lg transition cursor-pointer"
+                 onclick='openModal(<%- JSON.stringify(order) %>)'>
+              <div class="flex items-center gap-4">
+                <img src="<%= order.items[0].imageUrl %>" class="w-auto h-16 object-cover rounded-md">
+                <div>
+                  <p class="font-semibold text-gray-800"><%= order.items[0].name %> (x<%= order.items.length %>)</p>
+                  <p class="text-sm text-gray-500"><%= order.status %> | ₹<%= order.total %></p>
+                </div>
+              </div>
+              <i class="fa fa-angle-right text-orange-600 text-xl"></i>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p class="text-center text-gray-500">No orders found!</p>
+        <% } %>
       </div>
     </div>
   </section>
@@ -43,69 +55,21 @@
   </div>
 
   <script>
-    // Dummy Data (future me db/json se aayega)
-    const orders = [
-      {
-        id: "ORD123",
-        product: { name: "Paneer Butter Masala", imageUrl: "/images/paneer_masala.png" },
-        status: "Delivered",
-        date: "2025-09-15",
-        timeline: [
-          { title: "Order Confirmed", date: "2025-09-12", completed: true },
-          { title: "Shipped", date: "2025-09-13", completed: true },
-          { title: "Out For Delivery", date: "2025-09-14", completed: true },
-          { title: "Delivered", date: "2025-09-15", completed: true }
-        ]
-      },
-      {
-        id: "ORD124",
-        product: { name: "Veg Biryani", imageUrl: "/images/Veg_biryani.png" },
-        status: "Shipped",
-        date: "2025-09-14",
-        timeline: [
-          { title: "Order Confirmed", date: "2025-09-13", completed: true },
-          { title: "Shipped", date: "2025-09-14", completed: true },
-          { title: "Out For Delivery", date: "", completed: false },
-          { title: "Delivered", date: "", completed: false }
-        ]
-      }
-    ];
-
-    const ordersList = document.getElementById("ordersList");
     const trackingModal = document.getElementById("trackingModal");
     const modalTitle = document.getElementById("modalTitle");
     const timelineDiv = document.getElementById("timeline");
 
-    // Render Orders List
-    orders.forEach(order => {
-      const div = document.createElement("div");
-      div.className = "bg-white shadow-md rounded-lg p-4 flex items-center justify-between hover:shadow-lg transition cursor-pointer";
-      div.innerHTML = `
-        <div class="flex items-center gap-4">
-          <img src="${order.product.imageUrl}" class="w-auto h-16 object-cover rounded-md">
-          <div>
-            <p class="font-semibold text-gray-800">${order.product.name}</p>
-            <p class="text-sm text-gray-500">${order.status} on ${order.date}</p>
-          </div>
-        </div>
-        <i class="fa fa-angle-right text-orange-600 text-xl"></i>
-      `;
-      div.addEventListener("click", () => openModal(order));
-      ordersList.appendChild(div);
-    });
-
-    // Open Modal with Tracking Timeline
     function openModal(order) {
       modalTitle.textContent = `Order Tracking - ${order.id}`;
       timelineDiv.innerHTML = "";
 
-      order.timeline.forEach(step => {
+      order.history.forEach(step => {
         const stepDiv = document.createElement("div");
         stepDiv.innerHTML = `
-          <div class="${step.completed ? 'text-green-600' : 'text-gray-400'} font-semibold">
-            ${step.title}
+          <div class="font-semibold ${step.status === order.status ? 'text-orange-600' : 'text-gray-500'}">
+            ${step.status}
           </div>
-          <p class="text-sm text-gray-500">${step.date || ""}</p>
+          <p class="text-sm text-gray-500">${new Date(step.time).toLocaleString()}</p>
         `;
         timelineDiv.appendChild(stepDiv);
       });
@@ -113,7 +77,6 @@
       trackingModal.classList.remove("hidden");
     }
 
-    // Close Modal
     function closeModal() {
       trackingModal.classList.add("hidden");
     }
