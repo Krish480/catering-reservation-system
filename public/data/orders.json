@@ -1,5 +1,68 @@
 [
   {
+    "id": "d0cd5a8f-5295-48c2-ad85-3801b5778d33",
+    "user": "Guest",
+    "items": [
+      {
+        "id": "c6c0cbb7-128a-4ebb-98b6-acd284debace",
+        "name": "Masala Dosa",
+        "price": 150,
+        "imageUrl": "/images/masala_dosa.png",
+        "quantity": 1
+      }
+    ],
+    "total": 150,
+    "status": "Pending",
+    "history": [
+      {
+        "status": "Pending",
+        "time": "2025-09-22T08:22:31.176Z"
+      }
+    ]
+  },
+  {
+    "id": "1f118270-f643-4401-851a-56f0202d35db",
+    "user": "Guest",
+    "items": [
+      {
+        "id": "bde2e3ed-08ab-40bf-9ba8-e592c5ac5268",
+        "name": "Dragon Fruite Juice",
+        "price": 150,
+        "imageUrl": "/images/products/31698b88-265f-4576-afcf-35a166d96f19.png",
+        "quantity": 1
+      }
+    ],
+    "total": 150,
+    "status": "Pending",
+    "history": [
+      {
+        "status": "Pending",
+        "time": "2025-09-22T08:22:09.701Z"
+      }
+    ]
+  },
+  {
+    "id": "0f507902-61cc-4615-8216-4411498f5fb5",
+    "user": "Guest",
+    "items": [
+      {
+        "id": "bde2e3ed-08ab-40bf-9ba8-e592c5ac5268",
+        "name": "Dragon Fruite Juice",
+        "price": 150,
+        "imageUrl": "/images/products/31698b88-265f-4576-afcf-35a166d96f19.png",
+        "quantity": 1
+      }
+    ],
+    "total": 150,
+    "status": "Pending",
+    "history": [
+      {
+        "status": "Pending",
+        "time": "2025-09-22T08:19:01.981Z"
+      }
+    ]
+  },
+  {
     "id": "5a521980-d037-4eb3-a698-fd791cd793c6",
     "items": [
       {
@@ -160,7 +223,7 @@
       }
     ],
     "total": 400,
-    "status": "Preparing",
+    "status": "Shipped",
     "history": [
       {
         "status": "Pending",
@@ -169,6 +232,10 @@
       {
         "status": "Preparing",
         "time": "2025-09-19T14:37:50.749Z"
+      },
+      {
+        "status": "Shipped",
+        "time": "2025-09-21T11:35:56.919Z"
       }
     ]
   }
