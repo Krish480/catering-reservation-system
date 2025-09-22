@@ -53,12 +53,11 @@
         <% if (user) { %>
           <!-- If logged in -->
           <div class="relative group hidden md:block">
-            <button class="flex items-center gap-2 bg-orange-600 text-white px-4 py-2 rounded-full">
-              <i class="fa-solid fa-user"></i>
-              <span>
-                <%= user.name %>
-              </span>
+            <button class="flex items-center">
+              <img src="<%= user.avatar || '/images/avatars/default.jpg' %>" alt="avatar"
+                class="w-13 h-10 rounded-full border-3 border-orange-500 object-cover cursor-pointer" />
             </button>
+            <!-- Dropdown -->
             <div
               class="absolute hidden group-hover:block right-0 mt-2 w-40 bg-white shadow-lg rounded-md overflow-hidden">
               <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-orange-100">My Profile</a>
@@ -76,6 +75,8 @@
             </div>
             <% } %>
 
+
+
               <!-- Mobile Hamburger -->
               <button id="mobile-btn" class="md:hidden text-2xl text-gray-600 focus:outline-none">
                 <i class="fa-solid fa-bars"></i>
@@ -87,23 +88,23 @@
     <div id="mobile-menu"
       class="md:hidden overflow-hidden max-h-0 bg-white shadow-md border-t border-gray-200 transition-all duration-500">
       <ul class="flex flex-col gap-4 p-4 text-gray-700 font-medium">
-        <li><a href="/" class="hover:text-orange-600">Home</a></li>
-        <li><a href="/menu" class="hover:text-orange-600">Menu</a></li>
-        <li><a href="/services" class="hover:text-orange-600">Services</a></li>
-        <li><a href="/orders" class="hover:text-orange-600">Orders</a></li>
-        <li><a href="/about" class="hover:text-orange-600">About</a></li>
-        <li><a href="/contact" class="hover:text-orange-600">Contact</a></li>
-        <li><a href="http://localhost:8080/admin/login" class="hover:text-orange-600">Admin</a></li>
-
 
         <% if (user) { %>
-          <li><a href="/profile" class="hover:text-orange-600"><i class="fa-solid fa-user"></i> Profile</a></li>
+          <li class="flex items-center gap-2">
+            <img src="<%= user.avatar || '/images/avatars/default.jpg' %>"
+              class="w-8 h-8 rounded-full border object-cover" />
+            <a href="/profile" class="hover:text-orange-600">Profile</a>
+          </li>
           <li><a href="/orders" class="hover:text-orange-600">My Orders</a></li>
-          <li><a href="/logout" class="hover:text-orange-600">Logout</a></li>
+          <li><a href="/logout" class="hover:text-red-600"><i class="fa-solid fa-right-from-bracket"></i>Logout</a></li>
           <% } else { %>
             <li><a href="/login" class="hover:text-orange-600">Login</a></li>
             <li><a href="/register" class="hover:text-orange-600">Register</a></li>
             <% } %>
+
+              <li><a href="/about" class="hover:text-orange-600">About</a></li>
+              <li><a href="http://localhost:8080/admin/login" class="hover:text-orange-600">Admin</a></li>
+
       </ul>
     </div>
   </header>
