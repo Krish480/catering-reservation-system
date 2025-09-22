@@ -37,7 +37,6 @@ app.use(
   })
 );
 
-
 // expose session to EJS
 app.use((req, res, next) => {
   res.locals.session = req.session;
@@ -60,12 +59,74 @@ app.get("/", (req, res) => {
 // Auth middleware
 const { ensureAuth } = require("./middlewares/auth");
 
-// Profile (protected)
-app.get("/profile", ensureAuth, (req, res) =>
-  res.render("pages/profile", { user: req.session.user })
-);
+// ================= Profile =================
+const multer = require('multer');
+const fsSync = require('fs');
+const AVATAR_DIR = path.join(__dirname, 'public', 'images', 'avatars');
 
-// ----------------- Orders (protected) -----------------
+// ensure avatar dir exists
+if (!fsSync.existsSync(AVATAR_DIR)) fsSync.mkdirSync(AVATAR_DIR, { recursive: true });
+
+const avatarStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, AVATAR_DIR),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname) || '.png';
+    cb(null, `avatar-${Date.now()}${ext}`);
+  }
+});
+const avatarUpload = multer({
+  storage: avatarStorage,
+  limits: { fileSize: 2 * 1024 * 1024 }
+}); // 2MB limit
+
+// Profile (protected)
+app.get("/profile", ensureAuth, (req, res) => {
+  res.render("pages/profile", { user: req.session.user });
+});
+
+// update profile (supports avatar upload OR avatarUrl OR preset)
+app.post("/profile", ensureAuth, avatarUpload.single('avatarFile'), async (req, res) => {
+  try {
+    const { name, address, gender, phone, avatarUrl, avatarPreset } = req.body;
+    const email = req.session.user.email;
+
+    // load all users
+    let users = await loadUsers();
+    let u = users.find(x => x.email === email);
+    if (!u) {
+      u = { email };
+      users.push(u);
+    }
+
+    // update
+    u.name = name || u.name || '';
+    u.address = address || u.address || '';
+    u.gender = gender || u.gender || '';
+    u.phone = phone || u.phone || '';
+
+    if (req.file) {
+      u.avatar = `/images/avatars/${req.file.filename}`;
+    } else if (avatarPreset) {
+      u.avatar = avatarPreset;
+    } else if (avatarUrl && avatarUrl.trim()) {
+      u.avatar = avatarUrl.trim();
+    }
+
+    // save users.json
+    await saveUsers(users);
+
+    // update session too
+    req.session.user = u;
+
+    res.redirect('/profile?updated=1');
+  } catch (err) {
+    console.error("Profile update error:", err);
+    res.status(500).send("Failed to update profile");
+  }
+});
+
+
+// ================= Orders =================
 const ORDERS_FILE = path.join(__dirname, "public", "data", "orders.json");
 
 app.get("/orders", ensureAuth, async (req, res) => {
@@ -85,12 +146,11 @@ app.get("/orders", ensureAuth, async (req, res) => {
   }
 });
 
-// Menu
+// ================= Menu & Products =================
 app.get("/menu", (req, res) => {
   res.render("pages/menu");
 });
 
-// Product (dynamic by id from menu.json)
 app.get("/product/:id", async (req, res) => {
   const id = req.params.id;
   try {
@@ -105,57 +165,36 @@ app.get("/product/:id", async (req, res) => {
   }
 });
 
-// Cart
-app.get("/cart", (req, res) => {
-  res.render("pages/cart");
-});
+// ================= Misc Pages =================
+app.get("/cart", (req, res) => res.render("pages/cart"));
+app.get("/about", (req, res) => res.render("pages/about"));
+app.get("/services", (req, res) => res.render("pages/services"));
+app.get("/contact", (req, res) => res.render("pages/contact"));
 
-// About
-app.get("/about", (req, res) => {
-  res.render("pages/about");
-});
-
-// Services
-app.get("/services", (req, res) => {
-  res.render("pages/services");
-});
-
-// Contact
-app.get("/contact", (req, res) => {
-  res.render("pages/contact");
-});
-
-// Auth routes
+// ================= Auth Routes =================
 app.use("/auth", authRouter);
 
-// login redirect
 app.get("/login", (req, res) => res.redirect("/auth/login"));
-
-// register redirect
 app.get("/register", (req, res) => res.redirect("/auth/register"));
 
-// logout
 app.get("/logout", (req, res) => {
-  req.session.destroy(() => {
-    res.redirect("/login");
-  });
+  req.session.destroy(() => res.redirect("/login"));
 });
 
-// ----------------- Admin Routes -----------------
+// ================= Admin Routes =================
 app.use("/admin", adminRoutes);
 
-// ----------------- Server Start -----------------
+// ================= Server Start =================
 app.listen(port, () => {
   console.log(`🚀 App is listening on port ${port}`);
 });
 
-// ----------------- For-Orders Save -----------------
+// ================= Orders Save =================
 app.post("/order", async (req, res) => {
   try {
     const cartData = JSON.parse(req.body.cartData || "[]");
     if (!cartData.length) return res.send("Cart is empty!");
 
-    // orders.json load
     let orders = [];
     try {
       const txt = await fs.readFile(ORDERS_FILE, "utf-8");
@@ -182,3 +221,23 @@ app.post("/order", async (req, res) => {
     res.status(500).send("Something went wrong!");
   }
 });
+
+
+// =================== Users Data ==================
+const USERS_FILE = path.join(__dirname, "public", "data", "users.json");
+
+// helper: load users
+async function loadUsers() {
+  try {
+    const txt = await fs.readFile(USERS_FILE, "utf-8");
+    return JSON.parse(txt || "[]");
+  } catch (err) {
+    if (err.code === "ENOENT") return [];
+    throw err;
+  }
+}
+
+// helper: save users
+async function saveUsers(users) {
+  await fs.writeFile(USERS_FILE, JSON.stringify(users, null, 2), "utf-8");
+}
