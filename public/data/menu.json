@@ -1,5 +1,50 @@
 [
   {
+    "id": "39c63924-9d0f-4351-9f18-500fb5a905bc",
+    "name": "Coco Cola Can",
+    "price": 49,
+    "description": "Chilled cola in a convenient can. Perfect for a quick refreshment anytime.",
+    "category": "cold-drink",
+    "offer": "5% OFF",
+    "imageUrl": "/images/products/0c0b3ff5-8574-4376-b796-d22ceab36905.png"
+  },
+  {
+    "id": "8e0f43f5-7d1e-446b-a24b-4756f9dd61bd",
+    "name": "Coco cola",
+    "price": 69,
+    "description": "Refreshing and chilled Coca Cola to quench your thirst. Perfect with meals or as a standalone drink.",
+    "category": "cold-drink",
+    "offer": "5% OFF",
+    "imageUrl": "/images/products/7caf8def-a579-4227-a7e3-8726921e35a9.png"
+  },
+  {
+    "id": "73781ea4-5630-439a-a7df-512c03612f4a",
+    "name": "Chicken Cheesy Burger",
+    "price": 189,
+    "description": "Juicy grilled chicken patty with melted cheese, fresh lettuce, tomatoes, and special sauce in a soft bun. Perfect for a quick meal.",
+    "category": "burger",
+    "offer": "10% OFF",
+    "imageUrl": "/images/products/0c4d6a07-bb70-440f-ba26-9e91e7d4f6a9.png"
+  },
+  {
+    "id": "dd2ae885-b04e-4366-9142-3c320ae9f823",
+    "name": "Italian Pizza with Cheese",
+    "price": 299,
+    "description": "Authentic Italian pizza topped with gooey mozzarella cheese, fresh tomato sauce, and herbs. Crispy on the outside, soft inside.",
+    "category": "pizza",
+    "offer": "15% OFF",
+    "imageUrl": "/images/products/17c43ae1-8693-474b-950d-6f2f72a35bf4.png"
+  },
+  {
+    "id": "c26bf0f4-20a2-4029-82dd-3febebd38d1d",
+    "name": "White Idli with Savory",
+    "price": 169,
+    "description": "Soft and fluffy white idlis served with a savory chutney. Perfect for a healthy breakfast or snack.",
+    "category": "South-indian",
+    "offer": "10% OFF",
+    "imageUrl": "/images/products/81f9373e-c214-46de-9b62-86e03fd09ba1.png"
+  },
+  {
     "id": "bde2e3ed-08ab-40bf-9ba8-e592c5ac5268",
     "name": "Dragon Fruite Juice",
     "price": 150,
@@ -13,7 +58,7 @@
     "name": "Chocolate Cake",
     "price": 250,
     "description": "Rich and moist chocolate cake topped with chocolate frosting.",
-    "category": "desert",
+    "category": "dessert",
     "offer": "10% OFF",
     "imageUrl": "/images/products/9fca13c5-3245-4794-9cc9-50c49b182fa5.png"
   },
@@ -174,9 +219,46 @@
     "name": "Rolls",
     "price": 160,
     "imageUrl": "/images/rolls.png",
-    "category": "snacks",
+    "category": "rolls",
     "description": "Tasty rolls stuffed with veggies and spices, served with chutney.",
     "offer": "10% OFF",
     "id": "21162103-eec2-4cf4-9621-2d9b0ab444c2"
-  }
+  },
+  {
+    "id": "k1l2m3n4-5678-9101-2232-324252627282",
+    "name": "Fruit Cake",
+    "price": 250,
+    "description": "Delicious and soft fruit cake loaded with assorted dried fruits and nuts. Perfect for celebrations or as a sweet treat.",
+    "category": "dessert",
+    "offer": "10% OFF",
+    "imageUrl": "/images/fruit cake.png"
+},
+{
+    "id": "l2m3n4o5-6789-1011-3232-425262728293",
+    "name": "Strawberry Cake",
+    "price": 300,
+    "description": "Soft and moist strawberry cake topped with fresh strawberries and creamy frosting. A delightful treat for any occasion.",
+    "category": "dessert",
+    "offer": "15% OFF",
+    "imageUrl": "/images/strawberry_ cake.png"
+},
+{
+    "id": "m3n4o5p6-7891-1121-3242-526272829303",
+    "name": "Vegitable Biryani",
+    "price": 180,
+    "description": "Aromatic basmati rice cooked with fresh vegetables, herbs, and spices. Served with a side of raita, perfect for a wholesome meal.",
+    "category": "biryani",
+    "offer": "10% OFF",
+    "imageUrl": "/images/vegetable biryani in balti.png"
+},
+{
+    "id": "n4o5p6q7-8912-1314-3252-627282930313",
+    "name": "Pepsi Can",
+    "price": 40,
+    "description": "Chilled Pepsi in a convenient can. Refreshing and perfect to enjoy anytime.",
+    "category": "cold-drink",
+    "offer": "5% OFF",
+    "imageUrl": "/images/pepsi_can.png"
+}
+
 ]
