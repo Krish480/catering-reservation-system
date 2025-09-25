@@ -1,12 +1,11 @@
-// server.js
 const express = require("express");
 const app = express();
-const port = 8080;
 const path = require("path");
-require("dotenv").config();
-const fs = require("fs").promises;
+const port = 8080;
 const { v4: uuidv4 } = require("uuid");
 const session = require("express-session");
+const fs = require("fs").promises;
+require("dotenv").config();
 
 // Routers
 const authRouter = require("./routes/auth");
@@ -30,8 +29,8 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24, 
-      secure: false,               
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+      secure: false,
       httpOnly: true
     }
   })
@@ -60,9 +59,9 @@ app.get("/", (req, res) => {
 const { ensureAuth } = require("./middlewares/auth");
 
 // ================= Profile =================
-const multer = require('multer');
-const fsSync = require('fs');
-const AVATAR_DIR = path.join(__dirname, 'public', 'images', 'avatars');
+const multer = require("multer");
+const fsSync = require("fs");
+const AVATAR_DIR = path.join(__dirname, "public", "images", "avatars");
 
 // ensure avatar dir exists
 if (!fsSync.existsSync(AVATAR_DIR)) fsSync.mkdirSync(AVATAR_DIR, { recursive: true });
@@ -70,14 +69,14 @@ if (!fsSync.existsSync(AVATAR_DIR)) fsSync.mkdirSync(AVATAR_DIR, { recursive: tr
 const avatarStorage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, AVATAR_DIR),
   filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname) || '.png';
+    const ext = path.extname(file.originalname) || ".png";
     cb(null, `avatar-${Date.now()}${ext}`);
-  }
+  },
 });
 const avatarUpload = multer({
   storage: avatarStorage,
-  limits: { fileSize: 2 * 1024 * 1024 }
-}); // 2MB limit
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB limit
+});
 
 // Profile (protected)
 app.get("/profile", ensureAuth, (req, res) => {
@@ -85,25 +84,26 @@ app.get("/profile", ensureAuth, (req, res) => {
 });
 
 // update profile (supports avatar upload OR avatarUrl OR preset)
-app.post("/profile", ensureAuth, avatarUpload.single('avatarFile'), async (req, res) => {
+app.post("/profile", ensureAuth, avatarUpload.single("avatarFile"), async (req, res) => {
   try {
     const { name, address, gender, phone, avatarUrl, avatarPreset } = req.body;
     const email = req.session.user.email;
 
     // load all users
     let users = await loadUsers();
-    let u = users.find(x => x.email === email);
+    let u = users.find((x) => x.email === email);
     if (!u) {
       u = { email };
       users.push(u);
     }
 
-    // update
-    u.name = name || u.name || '';
-    u.address = address || u.address || '';
-    u.gender = gender || u.gender || '';
-    u.phone = phone || u.phone || '';
+    // update fields
+    u.name = name || u.name || "";
+    u.address = address || u.address || "";
+    u.gender = gender || u.gender || "";
+    u.phone = phone || u.phone || "";
 
+    // avatar handling
     if (req.file) {
       u.avatar = `/images/avatars/${req.file.filename}`;
     } else if (avatarPreset) {
@@ -118,13 +118,12 @@ app.post("/profile", ensureAuth, avatarUpload.single('avatarFile'), async (req, 
     // update session too
     req.session.user = u;
 
-    res.redirect('/profile?updated=1');
+    res.redirect("/profile?updated=1");
   } catch (err) {
     console.error("Profile update error:", err);
     res.status(500).send("Failed to update profile");
   }
 });
-
 
 // ================= Orders =================
 const ORDERS_FILE = path.join(__dirname, "public", "data", "orders.json");
@@ -203,9 +202,17 @@ app.post("/order", async (req, res) => {
       if (err.code !== "ENOENT") throw err;
     }
 
+    // 🟢 user profile info from session
+    const user = req.session.user || {};
+    
     const newOrder = {
       id: uuidv4(),
-      user: req.session.user ? req.session.user.name : "Guest",
+      customer: {
+        name: user.name || "Guest",
+        email: user.email || "—",
+        phone: user.phone || "—"
+      },
+      address: user.address || "—",
       items: cartData,
       total: cartData.reduce((s, i) => s + i.price * (i.quantity || 1), 0),
       status: "Pending",
@@ -221,7 +228,6 @@ app.post("/order", async (req, res) => {
     res.status(500).send("Something went wrong!");
   }
 });
-
 
 // =================== Users Data ==================
 const USERS_FILE = path.join(__dirname, "public", "data", "users.json");

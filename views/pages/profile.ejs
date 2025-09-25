@@ -24,57 +24,59 @@
         <p class="text-gray-500 mt-1 text-sm sm:text-base">Manage your profile & delivery info</p>
       </div>
 
-      <!-- Profile Card -->
+      <!-- Profile Card & Form -->
       <div class="bg-white rounded-2xl shadow-lg p-4 sm:p-6 relative">
-
-        <!-- Avatar + Pencil -->
-        <div class="flex items-center gap-4">
-          <div class="relative">
-            <img id="avatarPreview" src="<%= user.avatar || '/images/avatars/default.jpg' %>" alt="avatar"
-              class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-orange-100 shadow" />
-            <button id="editAvatarBtn" type="button" title="Change avatar"
-              class="absolute -top-1 -right-1 bg-white h-6 w-6 sm:h-5 sm:w-5 flex items-center justify-center text-gray-400 rounded-full shadow hover:scale-110 transition">
-              <i class="fa-solid fa-pencil text-xs sm:text-sm"></i>
-            </button>
-          </div>
-
-          <div class="flex-1 min-w-0">
-            <h2 id="profileName" class="text-base sm:text-lg font-semibold truncate">
-              <%= user.name || user.email %>
-            </h2>
-            <p class="text-xs sm:text-sm text-gray-500 truncate">
-              <%= user.email %>
-            </p>
-            <p class="text-xs sm:text-sm text-gray-400 mt-1">User ID: <span class="font-mono text-xs">
-                <%= user.id %>
-              </span></p>
-          </div>
-        </div>
-
-        <!-- Form -->
         <form id="profileForm" action="/profile" method="POST" enctype="multipart/form-data"
-          class="mt-4 sm:mt-6 space-y-3 sm:space-y-4">
+          class="space-y-3 sm:space-y-4">
           <input type="hidden" name="avatarPreset" id="avatarPresetInput" value="">
           <input type="hidden" name="avatarUrl" id="avatarUrlInput" value="">
 
+          <!-- Avatar + Pencil -->
+          <div class="flex items-center gap-4">
+            <div class="relative">
+              <img id="avatarPreview" src="<%= user.avatar || '/images/avatars/default.jpg' %>" alt="avatar"
+                class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-orange-100 shadow" />
+              <button id="editAvatarBtn" type="button" title="Change avatar"
+                class="absolute -top-1 -right-1 bg-white h-6 w-6 sm:h-5 sm:w-5 flex items-center justify-center text-gray-400 rounded-full shadow hover:scale-110 transition">
+                <i class="fa-solid fa-pencil text-xs sm:text-sm"></i>
+              </button>
+            </div>
+
+            <div class="flex-1 min-w-0">
+              <h2 id="profileName" class="text-base sm:text-lg font-semibold truncate">
+                <%= user.name || user.email %>
+              </h2>
+              <p class="text-xs sm:text-sm text-gray-500 truncate">
+                <%= user.email %>
+              </p>
+              <p class="text-xs sm:text-sm text-gray-400 mt-1">User ID: <span class="font-mono text-xs">
+                  <%= user.id %>
+                </span></p>
+            </div>
+          </div>
+
+          <!-- Full Name -->
           <div>
             <label class="block text-sm font-medium text-gray-700">Full name</label>
             <input name="name" type="text" value="<%= user.name || '' %>"
               class="mt-1 w-full px-3 py-2 sm:px-4 sm:py-2 border rounded-lg focus:ring-2 focus:ring-orange-300 text-sm sm:text-base" />
           </div>
 
+          <!-- Email -->
           <div>
             <label class="block text-sm font-medium text-gray-700">Email</label>
             <input name="email" type="email" value="<%= user.email %>" readonly
               class="mt-1 w-full px-3 py-2 sm:px-4 sm:py-2 border rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed text-sm sm:text-base" />
           </div>
 
+          <!-- Phone -->
           <div>
             <label class="block text-sm font-medium text-gray-700">Phone</label>
             <input name="phone" type="tel" value="<%= user.phone || '' %>"
               class="mt-1 w-full px-3 py-2 sm:px-4 sm:py-2 border rounded-lg focus:ring-2 focus:ring-orange-300 text-sm sm:text-base" />
           </div>
 
+          <!-- Gender -->
           <div>
             <label class="block text-sm font-medium text-gray-700">Gender</label>
             <select name="gender"
@@ -86,12 +88,17 @@
             </select>
           </div>
 
+          <!-- Delivery Address -->
           <div>
             <label class="block text-sm font-medium text-gray-700">Delivery address</label>
             <textarea name="address" rows="3"
               class="mt-1 w-full px-3 py-2 sm:px-4 sm:py-2 border rounded-lg focus:ring-2 focus:ring-orange-300 text-sm sm:text-base"><%= user.address || '' %></textarea>
           </div>
 
+          <!-- File input inside form -->
+          <input type="file" id="avatarFileInput" name="avatarFile" accept="image/*" class="hidden" />
+
+          <!-- Buttons -->
           <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
             <a href="/"
               class="w-full sm:w-auto px-4 py-2 rounded-lg border text-gray-600 hover:bg-gray-50 text-sm sm:text-base text-center">Back
@@ -123,20 +130,15 @@
       <div class="mb-4">
         <h4 class="text-sm font-medium text-gray-700 mb-2">Preset avatars</h4>
         <div id="presetGrid" class="grid grid-cols-4 sm:grid-cols-5 gap-3 overflow-x-auto">
-          <img src="/images/avatars/avtar1.png"
-            class="w-14 h-14 object-cover rounded-full cursor-pointer border-2"
+          <img src="/images/avatars/avtar1.png" class="w-14 h-14 object-cover rounded-full cursor-pointer border-2"
             data-src="/images/avatars/avtar1.png">
-          <img src="/images/avatars/avtar2.png"
-            class="w-14 h-14 object-cover rounded-full cursor-pointer border-2"
+          <img src="/images/avatars/avtar2.png" class="w-14 h-14 object-cover rounded-full cursor-pointer border-2"
             data-src="/images/avatars/avtar2.png">
-          <img src="/images/avatars/avtar3.png"
-            class="w-14 h-14 object-cover rounded-full cursor-pointer border-2"
+          <img src="/images/avatars/avtar3.png" class="w-14 h-14 object-cover rounded-full cursor-pointer border-2"
             data-src="/images/avatars/avtar3.png">
-          <img src="/images/avatars/avtar4.jpg"
-            class="w-14 h-14 object-cover rounded-full cursor-pointer border-2"
+          <img src="/images/avatars/avtar4.jpg" class="w-14 h-14 object-cover rounded-full cursor-pointer border-2"
             data-src="/images/avatars/avtar4.jpg">
-          <img src="/images/avatars/avatar5.png"
-            class="w-14 h-14 object-cover rounded-full cursor-pointer border-2"
+          <img src="/images/avatars/avatar5.png" class="w-14 h-14 object-cover rounded-full cursor-pointer border-2"
             data-src="/images/avatars/avatar5.png">
         </div>
       </div>
@@ -144,7 +146,7 @@
       <!-- Upload -->
       <div class="mb-4">
         <h4 class="text-sm font-medium text-gray-700 mb-2">Upload from device</h4>
-        <input id="avatarFileInput" type="file" accept="image/*" class="block w-full" />
+        <input id="avatarFileModal" type="file" accept="image/*" class="block w-full" />
         <p class="text-xs text-gray-400 mt-1">Max 2MB. Will be uploaded on Save.</p>
       </div>
 
@@ -168,11 +170,11 @@
     class="fixed bottom-6 right-6 hidden bg-green-600 text-white px-4 py-2 rounded-lg shadow">Saved!</div>
 
   <script>
-    // Shorthand variables
     const avatarModal = document.getElementById('avatarModal');
     const editAvatarBtn = document.getElementById('editAvatarBtn');
     const closeAvatarModal = document.getElementById('closeAvatarModal');
-    const avatarFileInput = document.getElementById('avatarFileInput');
+    const avatarFileModal = document.getElementById('avatarFileModal');
+    const avatarFileInput = document.getElementById('avatarFileInput'); // inside form
     const avatarUrlField = document.getElementById('avatarUrlField');
     const avatarPresetInput = document.getElementById('avatarPresetInput');
     const avatarUrlInput = document.getElementById('avatarUrlInput');
@@ -199,13 +201,14 @@
     });
 
     // File preview
-    avatarFileInput.addEventListener('change', (e) => {
+    avatarFileModal.addEventListener('change', (e) => {
       const f = e.target.files[0];
       if (!f) return;
       const url = URL.createObjectURL(f);
       avatarPreview.src = url;
       avatarPresetInput.value = '';
       avatarUrlField.value = '';
+      avatarFileInput.files = e.target.files; // copy to form input
     });
 
     // URL preview
@@ -217,14 +220,11 @@
 
     // Apply avatar
     avatarApply.addEventListener('click', () => {
-      const form = document.getElementById('profileForm');
-      if (avatarFileInput.files.length) form.appendChild(avatarFileInput);
       avatarUrlInput.value = avatarUrlField.value || '';
       closeModal();
       showToast('Avatar selected — click Save to persist');
     });
 
-    // Toast function
     function showToast(msg) {
       const t = document.getElementById('profileToast');
       t.textContent = msg;
@@ -232,7 +232,6 @@
       setTimeout(() => t.classList.add('hidden'), 2200);
     }
 
-    // Show toast if updated
     if (location.search.indexOf('updated=1') !== -1) {
       showToast('Profile saved successfully!');
       history.replaceState(null, '', location.pathname);
@@ -241,20 +240,11 @@
 
   <style>
     @keyframes fade {
-      from {
-        opacity: 0;
-        transform: translateY(-6px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    .animate-fade {
-      animation: fade .18s ease both;
-    }
+    .animate-fade { animation: fade .18s ease both; }
   </style>
 
 </body>
-
 </html>
