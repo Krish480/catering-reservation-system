@@ -9,137 +9,141 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
+  <%- include("../partials/header") %>
+  <br><br>
 
-<%- include("../partials/header") %>
-<br><br>
+  <section class="container mx-auto py-16 px-6">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Your Cart</h2>
+    <div id="cart-container" class="space-y-4"></div>
 
-<section class="container mx-auto py-16 px-6">
-  <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Your Cart</h2>
-  <div id="cart-container" class="space-y-4"></div>
+    <div id="checkout-area" class="text-center mt-8">
+      <p id="cart-total" class="text-xl font-semibold mb-4"></p>
+      
+      <form id="order-form" action="/order" method="POST">
+        <input type="hidden" name="cartData" id="cartData">
+        <button type="submit" class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition">
+          Place Order
+        </button>
+      </form>
+    </div>
+  </section>
 
-  <div id="checkout-area" class="text-center mt-8">
-    <p id="cart-total" class="text-xl font-semibold mb-4"></p>
-    
-    <!-- Order Form -->
-    <form id="order-form" action="/order" method="POST">
-      <input type="hidden" name="cartData" id="cartData">
-      <button type="submit"
-        class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition">
-        Place Order
-      </button>
-    </form>
-  </div>
-</section>
+  <%- include("../partials/footer") %>
 
-<%- include("../partials/footer") %>
+  <script>
+    let cart = [];
 
-<script>
-let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    // Fetch cart from backend
+    async function fetchCart() {
+      try {
+        const res = await fetch('/cart/data');
+        const data = await res.json();
+        cart = data.cart || [];
+        renderCart();
+        updateCartCount(data.cartCount || 0);
+      } catch (err) {
+        console.error("Failed to fetch cart:", err);
+      }
+    }
 
-function renderCart() {
-  const container = document.getElementById('cart-container');
-  container.innerHTML = '';
+    function renderCart() {
+      const container = document.getElementById('cart-container');
+      container.innerHTML = '';
 
-  if (cart.length === 0) {
-    container.innerHTML = "<p class='text-center text-gray-600'>Your cart is empty 🛒</p>";
-    document.getElementById('cart-total').textContent = '';
-    document.getElementById('order-form').style.display = 'none';
-    return;
-  }
+      if (!cart.length) {
+        container.innerHTML = "<p class='text-center text-gray-600'>Your cart is empty 🛒</p>";
+        document.getElementById('cart-total').textContent = '';
+        document.getElementById('order-form').style.display = 'none';
+        return;
+      }
 
-  document.getElementById('order-form').style.display = 'block';
+      document.getElementById('order-form').style.display = 'block';
 
-  cart.forEach(item => {
-    const row = document.createElement('div');
-    row.className = 'flex items-center justify-between bg-white p-4 rounded-lg shadow-md';
+      cart.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'flex items-center justify-between bg-white p-4 rounded-lg shadow-md';
 
-    // Left: image + info
-    const left = document.createElement('div');
-    left.className = 'flex items-center gap-4';
-    const img = document.createElement('img');
-    img.src = item.imageUrl || '/images/logo.png'; // default image if missing
-    img.className = 'h-20 rounded-md';
+        const left = document.createElement('div');
+        left.className = 'flex items-center gap-4';
+        const img = document.createElement('img');
+        img.src = item.imageUrl;
+        img.className = 'h-20 rounded-md';
 
-    const info = document.createElement('div');
-    info.innerHTML = `<h3 class="font-semibold">${item.name || 'Unnamed Item'}</h3>
-                      <p>₹${item.price || 0}</p>`;
+        const info = document.createElement('div');
+        info.innerHTML = `<h3 class="font-semibold">${item.name}</h3>
+                          <p>₹${item.price}</p>`;
 
-    left.appendChild(img);
-    left.appendChild(info);
+        left.appendChild(img);
+        left.appendChild(info);
 
-    // Right: quantity + remove
-    const right = document.createElement('div');
-    right.className = 'flex items-center gap-4';
-    const qtyBox = document.createElement('div');
-    qtyBox.className = 'flex items-center gap-2';
+        const right = document.createElement('div');
+        right.className = 'flex items-center gap-4';
 
-    const minus = document.createElement('button');
-    minus.textContent = '-';
-    minus.className = 'flex font-semibold items-center justify-center p-1 h-6 w-6 bg-gray-200 hover:bg-gray-300 rounded';
-    minus.addEventListener('click', e => { e.preventDefault(); changeQty(item.id, -1); });
+        const qtyBox = document.createElement('div');
+        qtyBox.className = 'flex items-center gap-2';
+        const minus = document.createElement('button'); minus.textContent='-';
+        minus.className = 'flex font-semibold items-center justify-center p-1 h-6 w-6 bg-gray-200 hover:bg-gray-300 rounded';
+        minus.addEventListener('click', e => { e.preventDefault(); updateQty(item.id, -1); });
+        const qty = document.createElement('span'); qty.textContent = item.quantity;
+        const plus = document.createElement('button'); plus.textContent='+';
+        plus.className = minus.className;
+        plus.addEventListener('click', e => { e.preventDefault(); updateQty(item.id, +1); });
 
-    const qty = document.createElement('span');
-    qty.textContent = item.quantity || 1;
+        qtyBox.appendChild(minus); qtyBox.appendChild(qty); qtyBox.appendChild(plus);
 
-    const plus = document.createElement('button');
-    plus.textContent = '+';
-    plus.className = 'flex font-semibold items-center justify-center p-1 h-6 w-6 bg-gray-200 hover:bg-gray-300 rounded';
-    plus.addEventListener('click', e => { e.preventDefault(); changeQty(item.id, +1); });
+        const remove = document.createElement('button');
+        remove.className = 'text-red-500';
+        remove.textContent = 'Remove';
+        remove.addEventListener('click', e => { e.preventDefault(); removeItem(item.id); });
 
-    qtyBox.appendChild(minus);
-    qtyBox.appendChild(qty);
-    qtyBox.appendChild(plus);
+        right.appendChild(qtyBox); right.appendChild(remove);
 
-    const remove = document.createElement('button');
-    remove.className = 'text-red-500';
-    remove.textContent = 'Remove';
-    remove.addEventListener('click', e => { e.preventDefault(); removeFromCart(item.id); });
+        row.appendChild(left); row.appendChild(right);
+        container.appendChild(row);
+      });
 
-    right.appendChild(qtyBox);
-    right.appendChild(remove);
+      updateTotal();
+    }
 
-    row.appendChild(left);
-    row.appendChild(right);
-    container.appendChild(row);
-  });
+    async function updateQty(id, delta) {
+      try {
+        const res = await fetch('/cart/update', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ id, delta })
+        });
+        const data = await res.json();
+        if(data.success) fetchCart();
+      } catch(err) { console.error(err); }
+    }
 
-  updateTotal();
-}
+    async function removeItem(id) {
+      try {
+        const res = await fetch('/cart/remove', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ id })
+        });
+        const data = await res.json();
+        if(data.success) fetchCart();
+      } catch(err) { console.error(err); }
+    }
 
-// Quantity change
-function changeQty(id, delta){
-  const it = cart.find(x => String(x.id) === String(id));
-  if(!it) return;
-  it.quantity = (it.quantity || 1) + delta;
-  if(it.quantity <= 0) cart = cart.filter(x => String(x.id) !== String(id));
-  localStorage.setItem('cart', JSON.stringify(cart));
-  renderCart();
-  if(window.updateCartCount) updateCartCount();
-}
+    function updateTotal() {
+      const total = cart.reduce((s, i) => s + (i.price * (i.quantity || 1)), 0);
+      document.getElementById('cart-total').textContent = 'Total: ₹' + total;
+    }
 
-// Remove item
-function removeFromCart(id){
-  cart = cart.filter(x => String(x.id) !== String(id));
-  localStorage.setItem('cart', JSON.stringify(cart));
-  renderCart();
-  if(window.updateCartCount) updateCartCount();
-}
+    function updateCartCount(count) {
+      const el = document.getElementById('cart-count');
+      if(el) el.textContent = count;
+    }
 
-// Update total
-function updateTotal(){
-  const total = cart.reduce((s,i)=> s + ((i.price||0) * (i.quantity||1)), 0);
-  document.getElementById('cart-total').textContent = 'Total: ₹' + total;
-}
+    document.getElementById('order-form').addEventListener('submit', function(){
+      document.getElementById('cartData').value = JSON.stringify(cart);
+    });
 
-// Submit form
-document.getElementById("order-form").addEventListener("submit", function(){
-  document.getElementById("cartData").value = JSON.stringify(cart);
-  localStorage.removeItem("cart");
-});
-
-// Initialize
-document.addEventListener('DOMContentLoaded', renderCart);
-</script>
-<script src="/js/cart.js"></script>
+    document.addEventListener('DOMContentLoaded', fetchCart);
+  </script>
 </body>
 </html>
