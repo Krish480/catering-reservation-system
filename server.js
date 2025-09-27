@@ -4,6 +4,7 @@ const path = require("path");
 const port = 8080;
 const { v4: uuidv4 } = require("uuid");
 const session = require("express-session");
+const FileStore = require("session-file-store")(session);
 const fs = require("fs").promises;
 require("dotenv").config();
 
@@ -25,11 +26,12 @@ app.use(express.static(path.join(__dirname, "public")));
 // Session setup
 app.use(
   session({
+    store: new FileStore({}),
     secret: process.env.SESSION_SECRET || "Krishnapandey$638",
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
       secure: false,
       httpOnly: true
     }
@@ -42,7 +44,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Make user available in all EJS templates
+// user available in all EJS templates
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
   next();
@@ -79,51 +81,55 @@ const avatarUpload = multer({
 });
 
 // Profile (protected)
-app.get("/profile", ensureAuth, (req, res) => {
-  res.render("pages/profile", { user: req.session.user });
+app.get("/profile", ensureAuth, async (req, res) => {
+  const users = await loadUsers();
+  const u = users.find(x => x.email === req.session.user.email);
+  res.render("pages/profile", { user: u || req.session.user });
 });
 
-// update profile (supports avatar upload OR avatarUrl OR preset)
 app.post("/profile", ensureAuth, avatarUpload.single("avatarFile"), async (req, res) => {
   try {
     const { name, address, gender, phone, avatarUrl, avatarPreset } = req.body;
     const email = req.session.user.email;
 
-    // load all users
+    // Load users
     let users = await loadUsers();
-    let u = users.find((x) => x.email === email);
+    let u = users.find(user => user.email === email);
     if (!u) {
       u = { email };
       users.push(u);
     }
 
-    // update fields
-    u.name = name || u.name || "";
-    u.address = address || u.address || "";
+    // Update basic info
+    u.name = name?.trim() || u.name || "";
+    u.address = address?.trim() || u.address || "";
     u.gender = gender || u.gender || "";
-    u.phone = phone || u.phone || "";
+    u.phone = phone?.trim() || u.phone || "";
 
-    // avatar handling
+    // Handle avatar selection
     if (req.file) {
       u.avatar = `/images/avatars/${req.file.filename}`;
     } else if (avatarPreset) {
       u.avatar = avatarPreset;
-    } else if (avatarUrl && avatarUrl.trim()) {
+    } else if (avatarUrl?.trim()) {
       u.avatar = avatarUrl.trim();
     }
 
-    // save users.json
+    // Save updated users.json
     await saveUsers(users);
 
-    // update session too
-    req.session.user = u;
+    // Sync session
+    req.session.user = { ...u };
+    await new Promise(r => req.session.save(r));
 
     res.redirect("/profile?updated=1");
+
   } catch (err) {
     console.error("Profile update error:", err);
     res.status(500).send("Failed to update profile");
   }
 });
+
 
 // ================= Orders =================
 const ORDERS_FILE = path.join(__dirname, "public", "data", "orders.json");
@@ -133,9 +139,9 @@ app.get("/orders", ensureAuth, async (req, res) => {
     const txt = await fs.readFile(ORDERS_FILE, "utf-8");
     const orders = JSON.parse(txt || "[]");
 
-    // filter current user ke orders
+    // filter orders by session user email
     const userOrders = orders.filter(
-      (o) => o.user === (req.session.user ? req.session.user.name : "Guest")
+      (o) => o.customer && o.customer.email === req.session.user.email
     );
 
     res.render("pages/orders", { orders: userOrders });
@@ -144,6 +150,7 @@ app.get("/orders", ensureAuth, async (req, res) => {
     res.render("pages/orders", { orders: [] });
   }
 });
+
 
 // ================= Menu & Products =================
 app.get("/menu", (req, res) => {
@@ -202,9 +209,9 @@ app.post("/order", async (req, res) => {
       if (err.code !== "ENOENT") throw err;
     }
 
-    // 🟢 user profile info from session
+    //  user profile info from session
     const user = req.session.user || {};
-    
+
     const newOrder = {
       id: uuidv4(),
       customer: {
@@ -228,6 +235,70 @@ app.post("/order", async (req, res) => {
     res.status(500).send("Something went wrong!");
   }
 });
+
+// ================ Cart APIs ==============
+app.get('/cart/data', ensureAuth, async (req, res) => {
+  const users = await loadUsers();
+  let user = users.find(u => u.email === req.session.user.email);
+  if (!user) {
+    // agar user exist nahi karta to initialize
+    user = { email: req.session.user.email, cart: [] };
+    users.push(user);
+    await saveUsers(users);
+  }
+  res.json({
+    cart: user.cart || [],
+    cartCount: (user.cart || []).reduce((s, i) => s + (i.quantity || 1), 0)
+  });
+});
+
+// Add item to cart
+app.post('/cart/add', ensureAuth, async (req, res) => {
+  const users = await loadUsers();
+  const user = users.find(u => u.email === req.session.user.email);
+  if (!user.cart) user.cart = [];
+
+  const item = req.body.item;
+  if (!item || !item.id) return res.status(400).json({ success: false, msg: "Invalid item" });
+
+  const exist = user.cart.find(x => x.id === item.id);
+  if (exist) exist.quantity = (exist.quantity || 1) + 1;
+  else user.cart.push({ ...item, quantity: 1 });
+
+  await saveUsers(users);
+  res.json({ success: true, cartCount: user.cart.reduce((s, i) => s + (i.quantity || 1), 0) });
+});
+
+// Update quantity
+app.post('/cart/update', ensureAuth, async (req, res) => {
+  const { id, delta } = req.body;
+  const users = await loadUsers();
+  const user = users.find(u => u.email === req.session.user.email);
+  if (!user.cart) user.cart = [];
+
+  const item = user.cart.find(x => x.id === id);
+  if (item) {
+    item.quantity = (item.quantity || 1) + delta;
+    if (item.quantity <= 0) user.cart = user.cart.filter(x => x.id !== id);
+  }
+
+  await saveUsers(users);
+  res.json({ success: true, cartCount: user.cart.reduce((s, i) => s + (i.quantity || 1), 0) });
+});
+
+// Remove item
+app.post('/cart/remove', ensureAuth, async (req, res) => {
+  const { id } = req.body;
+  const users = await loadUsers();
+  const user = users.find(u => u.email === req.session.user.email);
+  if (!user.cart) user.cart = [];
+
+  user.cart = user.cart.filter(x => x.id !== id);
+
+  await saveUsers(users);
+  res.json({ success: true, cartCount: user.cart.reduce((s, i) => s + (i.quantity || 1), 0) });
+});
+
 
 // =================== Users Data ==================
 const USERS_FILE = path.join(__dirname, "public", "data", "users.json");
