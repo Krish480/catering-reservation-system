@@ -44,9 +44,13 @@
           </button>
         </form>
 
-        <!-- Cart Desktop -->
-        <a href="/cart" class="hidden md:block text-xl text-gray-600 hover:text-orange-600">
+        <!-- Cart Desktop --> <a href="/cart"
+          class="hidden md:block text-xl text-gray-600 hover:text-orange-600 relative">
           <i class="fa-solid fa-cart-shopping"></i>
+          <!-- Badge -->
+          <span id="cart-badge"
+            class="hidden absolute -top-1 -right-1 bg-red-600 text-white text-[10px] min-w-[16px] h-[16px] rounded-full flex items-center justify-center px-1">
+          </span>
         </a>
 
         <!-- Auth Section -->
@@ -62,7 +66,8 @@
               class="absolute hidden group-hover:block right-0 mt-2 w-40 bg-white shadow-lg rounded-md overflow-hidden">
               <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-orange-100">My Profile</a>
               <a href="/orders" class="block px-4 py-2 text-gray-700 hover:bg-orange-100">My Orders</a>
-              <a href="/logout" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:text-red-600">Logout <i class="fa-solid fa-right-from-bracket"></i></a>
+              <a href="/logout" class="block px-4 py-2 text-gray-700 hover:bg-orange-100 hover:text-red-600">Logout <i
+                  class="fa-solid fa-right-from-bracket"></i></a>
             </div>
           </div>
           <% } else { %>
@@ -148,11 +153,14 @@
         Orders
       </span>
     </a>
-    <a href="/cart" class=" nav-link flex flex-col items-center text-gray-600 hover:text-orange-600" data-page="cart">
+    <a href="/cart" class=" nav-link flex flex-col items-center text-gray-600 hover:text-orange-600 relative"
+      data-page="cart">
       <i class="fa-solid fa-cart-shopping"></i>
-      <span class="text-xs font-semibold"></span>
-      <span
-        class="text-xs text-gray-600 font-semibold relative text-gray-800 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[4px] after:bg-orange-600 after:rounded-t-full hover:after:w-full after:transition-all after:duration-300">
+      <!-- Badge -->
+      <span id="cart-badge-mobile"
+        class="hidden absolute -top-1 -right-1 bg-red-600 text-white text-[10px] min-w-[12px] h-[12px] rounded-full flex items-center justify-center px-1">
+      </span>
+      <span class="text-xs text-gray-600 font-semibold">
         Carts
       </span>
     </a>
@@ -195,7 +203,7 @@
       const q = document.getElementById("siteSearchInput").value.trim();
       if (q) {
         window.location.href = "/menu?q=" + encodeURIComponent(q);
-      } else {
+      } else {z
         window.location.href = "/menu";
       }
     }
@@ -215,6 +223,13 @@
       icon.classList.toggle("fa-xmark");
     });
   </script>
+<!-- Include cart.js -->
+<script src="/js/cart.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if(window.updateCartCount) window.updateCartCount(); // initialize badge
+  });
+</script>  
 </body>
 
 </html>
