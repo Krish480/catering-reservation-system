@@ -23,7 +23,6 @@ async function loadUsers() {
     throw err;
   }
 }
-
 async function saveUsers(users) {
   await fs.writeFile(USERS_FILE, JSON.stringify(users, null, 2), "utf-8");
 }
@@ -60,14 +59,19 @@ router.post('/register', async (req, res) => {
         phone: '',
         address: '',
         gender: '',
-        avatar: '/images/avatars/default.jpg'
+        avatar: '/images/avatars/default.jpg',
+        cart: []
       });
       await saveUsers(users);
     }
 
-    return res.render("pages/register", {
-      success: "🎉 Account created successfully! Redirecting to homepage...",
-      error: null
+    // ✅ Force save session before redirect/render
+    req.session.save(err => {
+      if (err) console.error("Session save error:", err);
+      return res.render("pages/register", {
+        success: "🎉 Account created successfully! Redirecting to homepage...",
+        error: null
+      });
     });
 
   } catch (err) {
@@ -102,12 +106,17 @@ router.post('/login', async (req, res) => {
       phone: u ? u.phone : '',
       address: u ? u.address : '',
       gender: u ? u.gender : '',
-      avatar: u ? u.avatar : '/images/avatars/default.jpg'
+      avatar: u ? u.avatar : '/images/avatars/default.jpg',
+      cart: u ? u.cart || [] : []
     };
 
-    return res.render("pages/login", {
-      success: "✅ Login successful! Redirecting to homepage...",
-      error: null
+    // ✅ Save session
+    req.session.save(err => {
+      if (err) console.error("Session save error:", err);
+      return res.render("pages/login", {
+        success: "✅ Login successful! Redirecting to homepage...",
+        error: null
+      });
     });
 
   } catch (err) {
