@@ -1,10 +1,66 @@
 [
   {
+    "email": "krishnapandey56987@gmail.com",
+    "cart": [
+      {
+        "id": "bde2e3ed-08ab-40bf-9ba8-e592c5ac5268",
+        "name": "Dragon Fruite Juice",
+        "price": 143,
+        "imageUrl": "/images/products/31698b88-265f-4576-afcf-35a166d96f19.png",
+        "quantity": 1
+      },
+      {
+        "id": "39c63924-9d0f-4351-9f18-500fb5a905bc",
+        "name": "Coco Cola Can",
+        "price": 47,
+        "imageUrl": "/images/products/0c0b3ff5-8574-4376-b796-d22ceab36905.png",
+        "quantity": 1
+      },
+      {
+        "id": "aceb0c8a-e0be-4844-b71d-cc454d7774de",
+        "name": "Coffee",
+        "price": 80,
+        "imageUrl": "/images/coffee.png",
+        "quantity": 1
+      },
+      {
+        "id": "dcbbcdb4-ff16-4a84-a0d7-a52572ac7535",
+        "name": "Soup",
+        "price": 94,
+        "imageUrl": "/images/steaming hot soup.png",
+        "quantity": 1
+      },
+      {
+        "id": "73781ea4-5630-439a-a7df-512c03612f4a",
+        "name": "Chicken Cheesy Burger",
+        "price": 170,
+        "imageUrl": "/images/products/0c4d6a07-bb70-440f-ba26-9e91e7d4f6a9.png",
+        "quantity": 1
+      },
+      {
+        "id": "4cfef07e-5d67-4def-940e-ff667f7c9136",
+        "name": "Ice Cream",
+        "price": 114,
+        "imageUrl": "/images/ice-cream.png",
+        "quantity": 1
+      }
+    ]
+  },
+  {
     "email": "krishpandey1866@gmail.com",
-    "name": "Krishna Pandey",
-    "address": "At post sonora, sonora  teh multai, dist betul",
+    "cart": [
+      {
+        "id": "ef82b16b-72f7-46e7-893b-7c25795a2d08",
+        "name": "Chole Bhature",
+        "price": 114,
+        "imageUrl": "/images/chhole_bhature.png",
+        "quantity": 1
+      }
+    ],
+    "name": "Krisna Pandey",
+    "address": "Bhopal",
     "gender": "male",
-    "phone": "43534421",
-    "avatar": "/images/avatars/avtar2.png"
+    "phone": "89246826",
+    "avatar": "/images/avatars/avtar1.png"
   }
 ]
