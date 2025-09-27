@@ -3,118 +3,121 @@
 
 <head>
   <meta charset="UTF-8">
-  <title><%= product ? product.name : "Product" %> - MealMatrix</title>
+  <title>
+    <%= product ? product.name : "Product" %> - MealMatrix
+  </title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body class="bg-gray-50 font-sans">
   <%- include("../partials/header") %>
-  <br><br>
+    <br><br>
 
-  <section class="container mx-auto py-12 px-6">
-    <% if (product) { %>
-      <div class="bg-white shadow-lg rounded-xl p-6 flex flex-col md:flex-row gap-8">
-        
-        <!-- Product Image + Badge -->
-        <div class="flex-1 relative">
-          <img src="<%= product.imageUrl %>" alt="<%= product.name %>" 
-               class="rounded-lg w-64 h-64 object-cover drop-shadow-lg">
-          <% if (product.offer) { %>
-            <span class="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
-              <%= product.offer %>
-            </span>
-          <% } %>
-        </div>
+    <section class="container mx-auto py-12 px-6">
+      <% if (product) { %>
+        <div class="bg-white shadow-lg rounded-xl p-6 flex flex-col md:flex-row gap-8">
 
-        <!-- Product Details -->
-        <div class="flex-1">
-          <h1 class="text-3xl font-bold text-gray-800"><%= product.name %></h1>
-          <p class="mt-2 text-gray-600 text-sm"><%= product.description || "Delicious, freshly prepared." %></p>
+          <!-- Product Image + Badge -->
+          <div class="flex-1 relative">
+            <img src="<%= product.imageUrl %>" alt="<%= product.name %>"
+              class="rounded-lg w-64 h-64 object-cover drop-shadow-lg">
+            <% if (product.offer) { %>
+              <span class="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
+                <%= product.offer %>
+              </span>
+            <% } %>
+          </div>
 
-          <% const discountedPrice = product.offer ? Math.round(product.price * (1 - parseInt(product.offer) / 100)) : product.price; %>
+          <!-- Product Details -->
+          <div class="flex-1">
+            <h1 class="text-3xl font-bold text-gray-800">
+              <%= product.name %>
+            </h1>
+            <p class="mt-2 text-gray-600 text-sm">
+              <%= product.description || "Delicious, freshly prepared." %>
+            </p>
 
-          <% if (product.offer) { %>
-            <p class="mt-4 text-gray-500 text-lg line-through">₹<%= product.price %></p>
-          <% } %>
-          <p class="mt-2 text-2xl font-bold text-orange-600">₹<%= discountedPrice %></p>
+            <% const discountedPrice = product.offer ? Math.round(product.price * (1 - parseInt(product.offer) / 100)) : product.price; %>
 
-          <!-- Buttons -->
-          <div class="mt-6 flex gap-4">
-            <button id="addToCartBtn" 
-              class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition">
-              Add to Cart
-            </button>
-            <a href="/menu" 
-              class="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition">
-              Back to Menu
-            </a>
+            <% if (product.offer) { %>
+              <p class="mt-4 text-gray-500 text-lg line-through">₹<%= product.price %></p>
+            <% } %>
+            <p class="mt-2 text-2xl font-bold text-orange-600">₹<%= discountedPrice %></p>
+
+            <!-- Buttons -->
+            <div class="mt-6 flex gap-4">
+              <button id="addToCartBtn"
+                class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition">
+                Add to Cart
+              </button>
+              <a href="/menu" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition">
+                Back to Menu
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-    <% } else { %>
-      <p class="text-center text-red-500">Product not found!</p>
-    <% } %>
-  </section>
+      <% } else { %>
+        <p class="text-center text-red-500">Product not found!</p>
+      <% } %>
+    </section>
 
   <%- include("../partials/footer") %>
 
   <script>
-    // Utility: Calculate discounted price
-    function getDiscountedPrice(item) {
-      if (item.offer) {
-        const match = item.offer.match(/(\d+)%/);
-        const discountPercent = match ? Number(match[1]) : 0;
-        return Math.round(Number(item.price || 0) * (1 - discountPercent / 100));
-      }
-      return Number(item.price || 0);
-    }
-
-    // Product from server
+    const USER_LOGGED_IN = <%= user ? true : false %>;
     const PRODUCT = <%- JSON.stringify(product || null) %>;
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
-    // Save cart
-    function saveCart() {
-      localStorage.setItem('cart', JSON.stringify(cart));
-      if (window.updateCartCount) window.updateCartCount();
+    // Add to cart backend
+    async function addToCart() {
+      if (!USER_LOGGED_IN) return window.location.href = '/login';
+      if (!PRODUCT || !PRODUCT.id) return alert('Product not available');
+
+      const finalPrice = PRODUCT.offer ? Math.round(PRODUCT.price * (1 - parseInt(PRODUCT.offer) / 100)) : PRODUCT.price;
+
+      try {
+        const res = await fetch('/cart/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            item: {
+              id: PRODUCT.id,
+              name: PRODUCT.name,
+              price: finalPrice,
+              imageUrl: PRODUCT.imageUrl,
+              quantity: 1
+            }
+          })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          showToast(`${PRODUCT.name} added to cart 🛒`);
+          if (typeof updateCartCount === 'function') updateCartCount();
+        } else {
+          alert('Failed to add to cart');
+        }
+
+      } catch (err) {
+        console.error('Cart error:', err);
+        alert('Error adding to cart');
+      }
     }
 
-    // Toast
+    document.getElementById('addToCartBtn')?.addEventListener('click', addToCart);
+
     function showToast(msg) {
       const t = document.createElement('div');
       t.textContent = msg;
-      t.className = 'fixed bottom-6 right-6 bg-gray-800 text-white px-4 py-2 rounded shadow';
+      t.className = 'fixed bottom-6 right-6 bg-gray-800 text-white px-4 py-2 rounded shadow z-50';
       document.body.appendChild(t);
       setTimeout(() => t.remove(), 1600);
     }
 
-    // Add to cart
-    function addToCartFromProduct() {
-      if (!PRODUCT || !PRODUCT.id) return alert('Product not available');
-
-      const finalPrice = getDiscountedPrice(PRODUCT);
-
-      const existing = cart.find(x => String(x.id) === String(PRODUCT.id));
-      if (existing) existing.quantity = (existing.quantity || 1) + 1;
-      else cart.push({
-        id: PRODUCT.id,
-        name: PRODUCT.name,
-        price: finalPrice,
-        originalPrice: PRODUCT.price,
-        imageUrl: PRODUCT.imageUrl,
-        quantity: 1
-      });
-
-      saveCart();
-      showToast(`${PRODUCT.name} added to cart 🛒`);
-    }
-
-    document.getElementById('addToCartBtn')?.addEventListener('click', addToCartFromProduct);
-
     window.addEventListener('DOMContentLoaded', () => {
-      if (window.updateCartCount) window.updateCartCount();
+      if (typeof updateCartCount === 'function') updateCartCount();
     });
   </script>
+
 </body>
 </html>
