@@ -24,7 +24,7 @@
     "description": "Juicy grilled chicken patty with melted cheese, fresh lettuce, tomatoes, and special sauce in a soft bun. Perfect for a quick meal.",
     "category": "burger",
     "offer": "10% OFF",
-    "imageUrl": "/images/burger.webp"
+    "imageUrl": "/images/chicken_burger.webp"
   },
   {
     "id": "dd2ae885-b04e-4366-9142-3c320ae9f823",
@@ -200,7 +200,7 @@
   {
     "name": "Pizza",
     "price": 300,
-    "imageUrl": "/images/pizza.webp",
+    "imageUrl": "/images/Pizza.webp",
     "category": "pizza",
     "description": "Delicious cheesy pizza with fresh toppings and soft crust.",
     "offer": "20% OFF",
@@ -209,7 +209,7 @@
   {
     "name": "Burger",
     "price": 180,
-    "imageUrl": "/images/burger.webp",
+    "imageUrl": "/images/Burger.webp",
     "category": "burger",
     "description": "Juicy burger with crispy patty, fresh veggies and sauces.",
     "offer": "15% OFF",
@@ -218,7 +218,7 @@
   {
     "name": "Rolls",
     "price": 160,
-    "imageUrl": "/images/rolls.webp",
+    "imageUrl": "/images/Rolls.webp",
     "category": "rolls",
     "description": "Tasty rolls stuffed with veggies and spices, served with chutney.",
     "offer": "10% OFF",
