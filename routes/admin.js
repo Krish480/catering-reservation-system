@@ -101,7 +101,7 @@ router.post('/products', ensureAdmin, upload.single('image'), async (req, res) =
     description: description || '',
     category: category || '',
     offer: offer || '',
-    imageUrl
+    imageUrl7
   };
   products.unshift(newProduct); // newest first
   await writeJson(MENU_FILE, products);

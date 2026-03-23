@@ -66,7 +66,7 @@
     "id": "eb876d19-5355-4b03-89fd-3c1dbfc01248",
     "name": "Paneer Butter Masala",
     "price": 250,
-    "imageUrl": "/images/paneer_masala.png",
+    "imageUrl": "/images/paneer_masala.webp",
     "category": "paneer",
     "description": "Rich and creamy paneer butter masala with authentic spices.",
     "offer": "10% OFF"
@@ -75,7 +75,7 @@
     "id": "73aa20af-033b-48f7-9135-72af8d85a773",
     "name": "Veg Biryani",
     "price": 180,
-    "imageUrl": "/images/Veg_biryani.png",
+    "imageUrl": "/images/Veg_biryani.webp",
     "category": "biryani",
     "description": "Aromatic rice cooked with fresh vegetables and spices.",
     "offer": "15% OFF"
@@ -84,7 +84,7 @@
     "id": "ef82b16b-72f7-46e7-893b-7c25795a2d08",
     "name": "Chole Bhature",
     "price": 120,
-    "imageUrl": "/images/chhole_bhature.png",
+    "imageUrl": "/images/chhole_bhature.webp",
     "category": "chole",
     "description": "Crispy bhature with spicy chole masala.",
     "offer": "5% OFF"
@@ -93,7 +93,7 @@
     "id": "c6c0cbb7-128a-4ebb-98b6-acd284debace",
     "name": "Masala Dosa",
     "price": 150,
-    "imageUrl": "/images/masala_dosa.png",
+    "imageUrl": "/images/masala_dosa.webp",
     "category": "South-indian",
     "description": "Crispy dosa stuffed with masala aloo filling.",
     "offer": "10% OFF"
@@ -101,7 +101,7 @@
   {
     "name": "Noodles",
     "price": 150,
-    "imageUrl": "/images/Noodels.png",
+    "imageUrl": "/images/Noodels.webp",
     "category": "noodles",
     "description": "Delicious stir-fried noodles with vegetables and sauces.",
     "offer": "10% OFF",
@@ -110,7 +110,7 @@
   {
     "name": "Pasta",
     "price": 200,
-    "imageUrl": "/images/pasta.png",
+    "imageUrl": "/images/pasta.webp",
     "category": "pasta",
     "description": "Creamy pasta cooked with fresh herbs and cheese.",
     "offer": "15% OFF",
@@ -119,7 +119,7 @@
   {
     "name": "Ice Cream",
     "price": 120,
-    "imageUrl": "/images/ice-cream.png",
+    "imageUrl": "/images/ice-cream.webp",
     "category": "dessert",
     "description": "Chilled ice cream with rich flavors.",
     "offer": "5% OFF",
@@ -128,7 +128,7 @@
   {
     "name": "Coffee",
     "price": 100,
-    "imageUrl": "/images/coffee.png",
+    "imageUrl": "/images/coffee.webp",
     "category": "beverages",
     "description": "Hot brewed coffee with rich aroma.",
     "offer": "20% OFF",
@@ -137,7 +137,7 @@
   {
     "name": "Sandwich",
     "price": 130,
-    "imageUrl": "/images/savory chicken club sandwich.png",
+    "imageUrl": "/images/savory chicken club sandwich.webp",
     "category": "snacks",
     "description": "Fresh sandwich filled with veggies and sauces.",
     "offer": "10% OFF",
@@ -146,7 +146,7 @@
   {
     "name": "Fries",
     "price": 90,
-    "imageUrl": "/images/fries.png",
+    "imageUrl": "/images/fries.webp",
     "category": "snacks",
     "description": "Crispy golden French fries with seasoning.",
     "offer": "15% OFF",
@@ -155,7 +155,7 @@
   {
     "name": "Samosa",
     "price": 50,
-    "imageUrl": "/images/samosa.png",
+    "imageUrl": "/images/samosa.webp",
     "category": "snacks",
     "description": "Crispy fried samosa stuffed with spiced potatoes.",
     "offer": "5% OFF",
@@ -164,7 +164,7 @@
   {
     "name": "Momos",
     "price": 120,
-    "imageUrl": "/images/traditional newari momos on white.png",
+    "imageUrl": "/images/traditional newari momos on white.webp",
     "category": "momos",
     "description": "Steamed momos served with spicy chutney.",
     "offer": "10% OFF",
@@ -173,7 +173,7 @@
   {
     "name": "Tacos",
     "price": 180,
-    "imageUrl": "/images/tacos food.png",
+    "imageUrl": "/images/tacos food.webp",
     "category": "tacos",
     "description": "Crunchy tacos filled with veggies and sauces.",
     "offer": "20% OFF",
@@ -182,7 +182,7 @@
   {
     "name": "Salad",
     "price": 140,
-    "imageUrl": "/images/salad.png",
+    "imageUrl": "/images/salad.webp",
     "category": "healthy",
     "description": "Fresh vegetable salad with dressing.",
     "offer": "10% OFF",
@@ -191,7 +191,7 @@
   {
     "name": "Soup",
     "price": 110,
-    "imageUrl": "/images/steaming hot soup.png",
+    "imageUrl": "/images/steaming hot soup.webp",
     "category": "healthy",
     "description": "Hot soup made with fresh vegetables.",
     "offer": "15% OFF",
@@ -200,7 +200,7 @@
   {
     "name": "Pizza",
     "price": 300,
-    "imageUrl": "/images/pizza.png",
+    "imageUrl": "/images/pizza.webp",
     "category": "pizza",
     "description": "Delicious cheesy pizza with fresh toppings and soft crust.",
     "offer": "20% OFF",
@@ -209,7 +209,7 @@
   {
     "name": "Burger",
     "price": 180,
-    "imageUrl": "/images/burger.png",
+    "imageUrl": "/images/burger.webp",
     "category": "burger",
     "description": "Juicy burger with crispy patty, fresh veggies and sauces.",
     "offer": "15% OFF",
@@ -218,7 +218,7 @@
   {
     "name": "Rolls",
     "price": 160,
-    "imageUrl": "/images/rolls.png",
+    "imageUrl": "/images/rolls.webp",
     "category": "rolls",
     "description": "Tasty rolls stuffed with veggies and spices, served with chutney.",
     "offer": "10% OFF",
@@ -231,7 +231,7 @@
     "description": "Delicious and soft fruit cake loaded with assorted dried fruits and nuts. Perfect for celebrations or as a sweet treat.",
     "category": "dessert",
     "offer": "10% OFF",
-    "imageUrl": "/images/fruit cake.png"
+    "imageUrl": "/images/fruit cake.webp"
 },
 {
     "id": "l2m3n4o5-6789-1011-3232-425262728293",
@@ -240,7 +240,7 @@
     "description": "Soft and moist strawberry cake topped with fresh strawberries and creamy frosting. A delightful treat for any occasion.",
     "category": "dessert",
     "offer": "15% OFF",
-    "imageUrl": "/images/strawberry_ cake.png"
+    "imageUrl": "/images/strawberry_ cake.webp"
 },
 {
     "id": "m3n4o5p6-7891-1121-3242-526272829303",
@@ -249,7 +249,7 @@
     "description": "Aromatic basmati rice cooked with fresh vegetables, herbs, and spices. Served with a side of raita, perfect for a wholesome meal.",
     "category": "biryani",
     "offer": "10% OFF",
-    "imageUrl": "/images/vegetable biryani in balti.png"
+    "imageUrl": "/images/vegetable biryani in balti.webp"
 },
 {
     "id": "n4o5p6q7-8912-1314-3252-627282930313",
@@ -258,7 +258,7 @@
     "description": "Chilled Pepsi in a convenient can. Refreshing and perfect to enjoy anytime.",
     "category": "cold-drink",
     "offer": "5% OFF",
-    "imageUrl": "/images/pepsi_can.png"
+    "imageUrl": "/images/pepsi_can.webp"
 }
 
 ]
